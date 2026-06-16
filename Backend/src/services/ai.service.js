@@ -255,7 +255,61 @@ Provide honest, constructive feedback. Be specific about what they got right and
 
 // ─── 10. ATS-Optimized Resume PDF ────────────────────────────────────────────
 async function generateAtsResumePdf({ resume, jobDescription, company, role }) {
-    const prompt = `You are an expert resume writer. Create an ATS-optimized resume.
+    const prompt = `You are an expert ATS (Applicant Tracking System) resume writer. Your job is to convert the uploaded CV into a single-page, ATS-optimized resume tailored to the target role that scores 90+ on ATS checkers.
+
+STRICT RULES — follow every one without exception:
+
+1. OUTPUT FORMAT & LENGTH CONSTRAINT
+   - Return a JSON with "html" field containing the complete HTML document.
+   - The document MUST fit on exactly ONE single page (A4 format). Keep it compact and dense.
+   - Word count must be strictly between 450 and 600 words. Max ~40 lines of content total.
+   - Use standard section headers (ATS systems scan for exact keywords): SUMMARY, SKILLS, EXPERIENCE, EDUCATION, CERTIFICATIONS (if any). Do not change these titles.
+   - Single column layout ONLY — no tables, no columns, no text boxes, no graphics, no icons, no color except black or dark gray text on a white background.
+
+2. CSS & LAYOUT RULES (for the HTML)
+   - Font: Arial or Calibri (sans-serif) at 10pt or 10.5pt. Line-height: 1.3.
+   - Margins: Tight margins. Set container padding to 0 and page margins to ~15mm.
+   - Spacing: Keep spacing between sections tight (e.g., margin-bottom: 8px).
+   - Use clean, standard HTML5 elements with inline styles only. Do not use CSS classes or external stylesheets.
+
+3. CONTACT HEADER
+   - Name centered at the top in large, bold font (e.g. 18pt to 20pt).
+   - Below the name, list Phone | Email | LinkedIn | GitHub | City, State on a single line, pipe-separated and centered. No full street address.
+
+4. PROFESSIONAL SUMMARY (Max 3-4 lines)
+   - Start with job title + years of experience.
+   - Include 2-3 hard skills or tools matching the job description.
+   - Mention one key measurable achievement.
+   - No generic soft-skill fluff (e.g., do not use "passionate", "hardworking", "detail-oriented").
+
+5. SKILLS SECTION
+   - List as comma-separated keywords on one line per category.
+   - Example: Languages: Python, Java | Frameworks: React, Node.js | Tools: Git, Docker.
+   - Include only real technical or functional skills from the original CV — do NOT invent skills.
+
+6. WORK EXPERIENCE SECTION
+   - Format: Job Title | Company Name | Month Year – Month Year (aligned nicely).
+   - Max 3-4 bullet points per role. Limit to the 3 most relevant jobs.
+   - Each bullet point MUST follow this format: Action Verb + Task + Measurable Result (with percentages, dollar values, or counts).
+   - Example: "Reduced API response time by 40% by implementing Redis caching across 3 microservices"
+   - If no metric exists in the original CV, use scope: "for a team of 8", "across 4 departments".
+   - Bullets only. No paragraphs. Use standard bullet character: •
+
+7. EDUCATION & CERTIFICATIONS
+   - Format: Degree | Institution | Graduation Year.
+   - GPA only if 3.5+ or 8.0+.
+   - Relevant coursework: one line, comma-separated (optional).
+
+8. WHAT TO CUT RUTHLESSLY
+   - Objectives/career goals section.
+   - References or "References available on request".
+   - Hobbies/interests (unless directly relevant to the role).
+   - Soft skills listed as a separate section (weave them into experience bullets instead).
+   - Experiences older than 10 years (unless highly relevant).
+
+9. KEYWORD OPTIMIZATION
+   - Mirror exact technical keywords from the job description and original CV naturally.
+   - Use full forms first, followed by abbreviation in brackets: e.g., "Applicant Tracking System (ATS)".
 
 Original Resume:
 ${resume}
@@ -265,20 +319,7 @@ Target Role: ${role}
 Job Description:
 ${jobDescription}
 
-STRICT REQUIREMENTS for ATS compatibility:
-1. Single column layout ONLY — no tables, no columns, no text boxes
-2. Standard section headers: Summary, Work Experience, Skills, Education
-3. Clean HTML with inline styles only (no external CSS, no CSS classes)
-4. Plain sans-serif font (Arial or Calibri equivalent)
-5. No colors except black/dark gray text on white background
-6. No images, icons, graphics, or special characters
-7. Bullet points with standard • character only
-8. Dates in consistent format: "Month Year – Month Year"
-9. Mirror keywords from the job description naturally throughout
-10. Max 2 pages worth of content
-11. Professional summary tailored to this specific role
-
-Return a JSON with "html" field containing the complete HTML document.`
+Return the HTML code wrapped inside the "html" key of the JSON object. Do not include any explanations, preamble, or markdown code block wrapper inside the JSON string.`
 
     const schema = z.object({
         html: z.string().describe("Complete HTML of the ATS-optimized resume")
