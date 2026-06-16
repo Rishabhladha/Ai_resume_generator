@@ -1,59 +1,92 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router'
 import { useAuth } from '../hooks/useAuth'
+import { Zap, User, Mail, Lock } from 'lucide-react'
+import '../auth.form.scss'
 
 const Register = () => {
-
+    const { handleRegister } = useAuth()
     const navigate = useNavigate()
-    const [ username, setUsername ] = useState("")
-    const [ email, setEmail ] = useState("")
-    const [ password, setPassword ] = useState("")
+    const [form, setForm] = useState({ username: '', email: '', password: '' })
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
 
-    const {loading,handleRegister} = useAuth()
-    
     const handleSubmit = async (e) => {
         e.preventDefault()
-        await handleRegister({username,email,password})
-        navigate("/")
-    }
-
-    if(loading){
-        return (<main><h1>Loading.......</h1></main>)
+        if (!form.username || !form.email || !form.password) { setError('All fields are required.'); return }
+        if (form.password.length < 6) { setError('Password must be at least 6 characters.'); return }
+        setLoading(true)
+        setError('')
+        try {
+            await handleRegister(form)
+            navigate('/')
+        } catch (err) {
+            setError('Account already exists with this email or username.')
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
-        <main>
-            <div className="form-container">
-                <h1>Register</h1>
+        <div className="auth-page">
+            <div className="auth-bg">
+                <div className="auth-glow auth-glow--1" />
+                <div className="auth-glow auth-glow--2" />
+            </div>
 
-                <form onSubmit={handleSubmit}>
+            <div className="auth-card">
+                <div className="auth-brand">
+                    <div className="auth-brand-icon"><Zap size={22} color="white" /></div>
+                    <span className="auth-brand-name">CareerOS</span>
+                </div>
 
-                    <div className="input-group">
-                        <label htmlFor="username">Username</label>
-                        <input
-                            onChange={(e) => { setUsername(e.target.value) }}
-                            type="text" id="username" name='username' placeholder='Enter username' />
+                <h1 className="auth-title">Start your job search</h1>
+                <p className="auth-subtitle">Create your free career command center</p>
+
+                <form onSubmit={handleSubmit} className="auth-form">
+                    <div className="auth-field">
+                        <label className="input-label">Username</label>
+                        <div className="input-icon-wrap">
+                            <User size={15} className="input-icon" />
+                            <input className="input input-with-icon" type="text" placeholder="johndoe"
+                                value={form.username} onChange={e => setForm(f => ({ ...f, username: e.target.value }))} />
+                        </div>
                     </div>
-                    <div className="input-group">
-                        <label htmlFor="email">Email</label>
-                        <input
-                            onChange={(e) => { setEmail(e.target.value) }}
-                            type="email" id="email" name='email' placeholder='Enter email address' />
+                    <div className="auth-field">
+                        <label className="input-label">Email</label>
+                        <div className="input-icon-wrap">
+                            <Mail size={15} className="input-icon" />
+                            <input className="input input-with-icon" type="email" placeholder="you@example.com"
+                                value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
+                        </div>
                     </div>
-                    <div className="input-group">
-                        <label htmlFor="password">Password</label>
-                        <input
-                            onChange={(e) => { setPassword(e.target.value) }}
-                            type="password" id="password" name='password' placeholder='Enter password' />
+                    <div className="auth-field">
+                        <label className="input-label">Password</label>
+                        <div className="input-icon-wrap">
+                            <Lock size={15} className="input-icon" />
+                            <input className="input input-with-icon" type="password" placeholder="Min 6 characters"
+                                value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} />
+                        </div>
                     </div>
 
-                    <button className='button primary-button' >Register</button>
+                    {error && <p className="auth-error">{error}</p>}
 
+                    <button type="submit" className="btn-primary auth-submit" disabled={loading}>
+                        {loading ? <><span className="spinner" style={{ width: 16, height: 16 }} /> Creating account...</> : 'Create Free Account'}
+                    </button>
                 </form>
 
-                <p>Already have an account? <Link to={"/login"} >Login</Link> </p>
+                <p className="auth-switch">
+                    Already have an account? <Link to="/login">Sign in</Link>
+                </p>
+
+                <div className="auth-features">
+                    {['Kanban Job Tracker', 'Mock Interview Grader', 'ATS Resume Audit', 'Negotiation Coach'].map(f => (
+                        <span key={f} className="auth-feature-chip">✓ {f}</span>
+                    ))}
+                </div>
             </div>
-        </main>
+        </div>
     )
 }
 

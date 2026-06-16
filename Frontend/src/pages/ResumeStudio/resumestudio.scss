@@ -1,0 +1,47 @@
+.resume-studio {
+  .studio-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 760px;
+  }
+
+  .studio-upload-section {
+    padding: 28px;
+  }
+
+  .resume-uploaded {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    background: var(--emerald-dim);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: var(--radius-md);
+  }
+
+  .master-upload-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 48px;
+    border: 2px dashed var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    text-align: center;
+    transition: var(--transition);
+    color: var(--text-secondary);
+
+    &:hover, &.drag-over {
+      border-color: var(--violet);
+      background: var(--violet-dim);
+      color: var(--violet-light);
+    }
+  }
+
+  .studio-skills {
+    padding: 24px;
+  }
+}

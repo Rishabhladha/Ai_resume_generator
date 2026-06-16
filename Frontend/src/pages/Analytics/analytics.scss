@@ -1,0 +1,193 @@
+.analytics-page {
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    &__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    &__value {
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 4px;
+      color: var(--text-primary) !important;
+    }
+
+    &__label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    &__sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+  }
+
+  .analytics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .analytics-card {
+    padding: 24px;
+
+    &__title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    &--full { grid-column: 1 / -1; }
+  }
+
+  // Funnel
+  .funnel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .funnel-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .funnel-label {
+        font-size: 12px;
+        font-weight: 600;
+        width: 80px;
+        flex-shrink: 0;
+      }
+
+      .funnel-bar-wrap {
+        flex: 1;
+        height: 8px;
+        background: rgba(255,255,255,0.04);
+        border-radius: 4px;
+        overflow: hidden;
+
+        .funnel-bar {
+          height: 100%;
+          border-radius: 4px;
+          transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+          opacity: 0.8;
+        }
+      }
+
+      .funnel-count {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text-primary);
+        width: 24px;
+        text-align: right;
+      }
+    }
+  }
+
+  // Bar chart
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 160px;
+
+    .bar-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      height: 100%;
+
+      .bar-track {
+        flex: 1;
+        width: 100%;
+        background: rgba(255,255,255,0.04);
+        border-radius: 4px;
+        display: flex;
+        align-items: flex-end;
+        overflow: hidden;
+
+        .bar-fill {
+          width: 100%;
+          background: linear-gradient(to top, var(--violet), var(--violet-light));
+          border-radius: 4px;
+          transition: height 0.8s cubic-bezier(0.4,0,0.2,1);
+          min-height: 2px;
+        }
+      }
+
+      .bar-label {
+        font-size: 10px;
+        color: var(--text-muted);
+      }
+
+      .bar-val {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-secondary);
+      }
+    }
+  }
+
+  // Skill Gaps
+  .skill-gap-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .skill-gap-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .skill-gap-rank {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      width: 24px;
+      flex-shrink: 0;
+    }
+
+    .skill-gap-name {
+      font-size: 14px;
+      font-weight: 500;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .skill-gap-count {
+      font-size: 12px;
+      color: var(--text-muted);
+      width: 60px;
+      text-align: right;
+    }
+  }
+}

@@ -1,0 +1,332 @@
+.warroom-page {
+  .warroom-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+
+    .warroom-job-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 1;
+    }
+
+    .warroom-company-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--violet), var(--cyan));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .warroom-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      margin-bottom: 2px;
+    }
+
+    .warroom-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .status-select {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 2px 8px;
+        font-size: 13px;
+        font-weight: 600;
+        outline: none;
+        cursor: pointer;
+        font-family: inherit;
+        transition: var(--transition);
+        text-transform: capitalize;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          border-color: var(--border-hover);
+        }
+
+        option {
+          background: var(--bg-secondary);
+          color: var(--text-primary);
+        }
+      }
+    }
+  }
+
+  .warroom-tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+    overflow-x: auto;
+    padding-bottom: 1px;
+
+    &::-webkit-scrollbar { height: 0; }
+  }
+
+  .warroom-tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: var(--transition);
+    margin-bottom: -1px;
+
+    &:hover { color: var(--text-secondary); }
+
+    &.active {
+      color: var(--violet-light);
+      border-bottom-color: var(--violet-light);
+      font-weight: 600;
+    }
+  }
+
+  .warroom-content {
+    min-height: 60vh;
+  }
+
+  // Prep layout
+  .prep-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 24px;
+    align-items: start;
+
+    .prep-main { min-width: 0; }
+    .prep-sidebar { position: sticky; top: 24px; }
+  }
+
+  // Audit layout
+  .audit-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .audit-header-scores {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .audit-score-card {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .audit-section-scores {
+      padding: 20px;
+    }
+
+    .audit-keywords {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+
+  // Mock interview
+  .mock-interview {
+    max-width: 720px;
+
+    .mock-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+
+      .mock-progress {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .mock-q-count {
+          font-size: 13px;
+          font-weight: 600;
+          color: var(--text-secondary);
+        }
+      }
+    }
+
+    .mock-question-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 20px;
+
+      .mock-q-badge { margin-bottom: 12px; }
+
+      .mock-question {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.5;
+        color: var(--text-primary);
+      }
+    }
+
+    .mock-answer-area {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .mock-textarea { min-height: 140px; }
+    }
+
+    .mock-grade {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+
+      .mock-score-row {
+        display: flex;
+        gap: 24px;
+        align-items: flex-start;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+
+        .mock-score {
+          display: flex;
+          align-items: baseline;
+          gap: 4px;
+          flex-shrink: 0;
+
+          .mock-score-val {
+            font-size: 52px;
+            font-weight: 900;
+            line-height: 1;
+          }
+
+          .mock-score-label {
+            font-size: 18px;
+            color: var(--text-muted);
+          }
+        }
+      }
+
+      .mock-details {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .mock-section { }
+    }
+  }
+
+  // Cover letter
+  .cover-wrap {
+    max-width: 720px;
+  }
+
+  // Salary
+  .salary-layout {
+    max-width: 640px;
+
+    .salary-main {
+      padding: 28px;
+    }
+
+    .salary-range {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin: 24px 0;
+
+      .salary-point {
+        text-align: center;
+        flex-shrink: 0;
+
+        .salary-amount {
+          display: block;
+          font-size: 20px;
+          font-weight: 800;
+          color: var(--text-primary);
+          font-family: 'JetBrains Mono', monospace;
+        }
+
+        .salary-label {
+          font-size: 11px;
+          color: var(--text-muted);
+        }
+      }
+
+      .salary-bar-wrap {
+        flex: 1;
+        position: relative;
+
+        .salary-bar {
+          height: 8px;
+          background: linear-gradient(90deg, var(--rose), var(--amber), var(--emerald));
+          border-radius: 4px;
+          position: relative;
+
+          .salary-bar-fill {
+            // decorative overlay
+          }
+
+          .salary-mid-marker {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--amber);
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+  }
+
+  .gen-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--violet-dim);
+    border: 1px solid var(--border-accent);
+    border-radius: var(--radius-sm);
+    color: var(--violet-light);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 16px;
+
+    &:hover:not(:disabled) {
+      background: rgba(124, 58, 237, 0.25);
+    }
+
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+}

@@ -1,10 +1,11 @@
-import { createBrowserRouter } from "react-router";
-import Login from "./features/auth/pages/Login";
-import Register from "./features/auth/pages/Register";
-import Protected from "./features/auth/components/Protected";
-import Home from "./features/interview/pages/Home";
-import Interview from "./features/interview/pages/Interview";
-
+import { createBrowserRouter } from "react-router"
+import Login from "./features/auth/pages/Login"
+import Register from "./features/auth/pages/Register"
+import Protected from "./features/auth/components/Protected"
+import Dashboard from "./pages/Dashboard/Dashboard"
+import WarRoom from "./pages/WarRoom/WarRoom"
+import ResumeStudio from "./pages/ResumeStudio/ResumeStudio"
+import Analytics from "./pages/Analytics/Analytics"
 
 export const router = createBrowserRouter([
     {
@@ -17,10 +18,18 @@ export const router = createBrowserRouter([
     },
     {
         path: "/",
-        element: <Protected><Home /></Protected>
+        element: <Protected><Dashboard /></Protected>
     },
     {
-        path:"/interview/:interviewId",
-        element: <Protected><Interview /></Protected>
+        path: "/jobs/:id",
+        element: <Protected><WarRoom /></Protected>
+    },
+    {
+        path: "/resume",
+        element: <Protected><ResumeStudio /></Protected>
+    },
+    {
+        path: "/analytics",
+        element: <Protected><Analytics /></Protected>
     }
 ])
