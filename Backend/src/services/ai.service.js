@@ -255,91 +255,111 @@ Provide honest, constructive feedback. Be specific about what they got right and
 
 // ─── 10. ATS-Optimized Resume PDF ────────────────────────────────────────────
 async function generateAtsResumePdf({ resume, jobDescription, company, role }) {
-    const prompt = `You are an expert ATS (Applicant Tracking System) resume writer. Your job is to convert the uploaded CV into a single-page, ATS-optimized resume tailored to the target role that scores 90+ on ATS checkers.
+    const prompt = `System Prompt:
+You are an expert ATS resume writer. Convert the provided CV into a single-page, ATS-optimized resume. Output ONLY clean plain text — no markdown, no asterisks, no special characters, no tables, no columns. Use these exact section headers as plain text labels.
 
-STRICT RULES — follow every one without exception:
+HARD RULES:
+- Single page only. Max 550 words total.
+- Zero tables, zero columns, zero graphics, zero icons.
+- Section headers must be: SUMMARY, TECHNICAL SKILLS, PROJECTS, EDUCATION, CERTIFICATIONS
+- Every bullet point = one line only. Action verb + what you built + measurable result.
+- Skills section: use "Category: skill1, skill2, skill3" format on separate lines. No pipes.
+- For projects/experience: add a tech stack line under the title (e.g., "Tech: Node.js, MongoDB, React.js")
+- Summary: exactly 3–4 lines. Must include: target role, years/level of experience, 2 hard skills, 1 metric.
+- Remove all of: objective sections, "references available", hobbies, soft skills as a section, filler words like "passionate" or "hardworking".
+- Do not invent any skill, project, or metric not in the original CV.
+- Do not output any explanation, preamble, or commentary — only the resume.
 
-1. OUTPUT FORMAT & LENGTH CONSTRAINT
-   - Return a JSON with "html" field containing the complete HTML document.
-   - The document MUST fit on exactly ONE single page (A4 format). Keep it compact and dense.
-   - Word count must be strictly between 450 and 600 words. Max ~40 lines of content total.
-   - Use standard section headers (ATS systems scan for exact keywords): SUMMARY, SKILLS, EXPERIENCE, EDUCATION, CERTIFICATIONS (if any). Do not change these titles.
-   - Single column layout ONLY — no tables, no columns, no text boxes, no graphics, no icons, no color except black or dark gray text on a white background.
+User Prompt:
+Convert this CV into an ATS-optimized single-page resume using the rules given.
 
-2. CSS & LAYOUT RULES (for the HTML)
-   - Font: Arial or Calibri (sans-serif) at 10pt or 10.5pt. Line-height: 1.3.
-   - Margins: Tight margins. Set container padding to 0 and page margins to ~15mm.
-   - Spacing: Keep spacing between sections tight (e.g., margin-bottom: 8px).
-   - Use clean, standard HTML5 elements with inline styles only. Do not use CSS classes or external stylesheets.
-
-3. CONTACT HEADER
-   - Name centered at the top in large, bold font (e.g. 18pt to 20pt).
-   - Below the name, list Phone | Email | LinkedIn | GitHub | City, State on a single line, pipe-separated and centered. No full street address.
-
-4. PROFESSIONAL SUMMARY (Max 3-4 lines)
-   - Start with job title + years of experience.
-   - Include 2-3 hard skills or tools matching the job description.
-   - Mention one key measurable achievement.
-   - No generic soft-skill fluff (e.g., do not use "passionate", "hardworking", "detail-oriented").
-
-5. SKILLS SECTION
-   - List as comma-separated keywords on one line per category.
-   - Example: Languages: Python, Java | Frameworks: React, Node.js | Tools: Git, Docker.
-   - Include only real technical or functional skills from the original CV — do NOT invent skills.
-
-6. WORK EXPERIENCE SECTION
-   - Format: Job Title | Company Name | Month Year – Month Year (aligned nicely).
-   - Max 3-4 bullet points per role. Limit to the 3 most relevant jobs.
-   - Each bullet point MUST follow this format: Action Verb + Task + Measurable Result (with percentages, dollar values, or counts).
-   - Example: "Reduced API response time by 40% by implementing Redis caching across 3 microservices"
-   - If no metric exists in the original CV, use scope: "for a team of 8", "across 4 departments".
-   - Bullets only. No paragraphs. Use standard bullet character: •
-
-7. EDUCATION & CERTIFICATIONS
-   - Format: Degree | Institution | Graduation Year.
-   - GPA only if 3.5+ or 8.0+.
-   - Relevant coursework: one line, comma-separated (optional).
-
-8. WHAT TO CUT RUTHLESSLY
-   - Objectives/career goals section.
-   - References or "References available on request".
-   - Hobbies/interests (unless directly relevant to the role).
-   - Soft skills listed as a separate section (weave them into experience bullets instead).
-   - Experiences older than 10 years (unless highly relevant).
-
-9. KEYWORD OPTIMIZATION
-   - Mirror exact technical keywords from the job description and original CV naturally.
-   - Use full forms first, followed by abbreviation in brackets: e.g., "Applicant Tracking System (ATS)".
-
-Original Resume:
+ORIGINAL CV:
+---
 ${resume}
+---
 
-Target Company: ${company}
-Target Role: ${role}
-Job Description:
+Target Role: ${role || "Software Engineer / Distributed Systems Engineer"}
+Target Company: ${company || "Target Company"}
+Job Description Context:
 ${jobDescription}
 
-Return the HTML code wrapped inside the "html" key of the JSON object. Do not include any explanations, preamble, or markdown code block wrapper inside the JSON string.`
+STRICT OUTPUT FORMAT TO FOLLOW:
+
+[FULL NAME]
+[Phone] | [Email] | [LinkedIn] | [GitHub] | [City, State]
+
+SUMMARY
+[3-4 line paragraph. No bullets.]
+
+TECHNICAL SKILLS
+Languages: [comma separated]
+Frameworks and Libraries: [comma separated]
+Databases: [comma separated]
+Tools and Platforms: [comma separated]
+Core Concepts: [comma separated — spell out abbreviations e.g. Object-Oriented Programming (OOP)]
+
+PROJECTS
+[Project Name — One Line Description]
+Tech: [comma separated stack]
+- [Action verb + what + result with number]
+- [Action verb + what + result with number]
+- [Action verb + what + result with number]
+
+[Repeat for each project]
+
+EDUCATION
+[Degree Name] | [University] | [Expected/Graduation Year]
+Relevant Coursework: [comma separated]
+
+CERTIFICATIONS
+- [Name] — [Issuer] ([Month Year])
+
+OUTPUT ONLY THE RESUME. NO EXPLANATIONS.`
 
     const schema = z.object({
-        html: z.string().describe("Complete HTML of the ATS-optimized resume")
+        resumeText: z.string().describe("The complete plain text of the ATS-optimized resume, strictly formatted as requested.")
     })
 
     const result = await jsonGenerate(schema, prompt)
+
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Resume</title>
+<style>
+  @page {
+    size: A4;
+    margin: 15mm 15mm 15mm 15mm;
+  }
+  body {
+    font-family: 'Arial', 'Calibri', sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.45;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+</style>
+</head>
+<body>${result.resumeText}</body>
+</html>`
 
     // Generate PDF via Puppeteer
     const browser = await puppeteer.launch({
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     })
     const page = await browser.newPage()
-    await page.setContent(result.html, { waitUntil: "networkidle0" })
+    await page.setContent(html, { waitUntil: "networkidle0" })
     const pdfBuffer = await page.pdf({
         format: "A4",
         margin: { top: "15mm", bottom: "15mm", left: "15mm", right: "15mm" }
     })
     await browser.close()
 
-    return { pdfBuffer, html: result.html }
+    return { pdfBuffer, html }
 }
 
 // ─── 11. Scrape Job Description from URL ──────────────────────────────────────
