@@ -1,6 +1,7 @@
 const pdfParse = require("pdf-parse")
 const JobApplication = require("../models/jobApplication.model")
 const UserProfile = require("../models/userProfile.model")
+const ResumeVersion = require("../models/resumeVersion.model")
 const {
     generateResumeAudit,
     generateInterviewPrep,
@@ -11,7 +12,8 @@ const {
     generateNegotiationCoach,
     gradeMockInterviewAnswer,
     generateAtsResumePdf,
-    extractProfileFromResume
+    extractProfileFromResume,
+    scrapeJobDescription
 } = require("../services/ai.service")
 
 // ─── Helper: get resume text from profile or application ────────────────────
@@ -34,17 +36,43 @@ async function createJobApplication(req, res) {
     }
 
     let resumeText = null
+    let resumeVersionId = null
 
-    // If resume PDF uploaded, parse it
+    // If resume PDF uploaded, parse it and save it as a new custom resume version
     if (req.file) {
         const parsed = await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText()
         resumeText = parsed.text
+        
+        const customVersion = await ResumeVersion.create({
+            user: req.user.id,
+            name: `${company} - ${role} Resume (Uploaded)`,
+            resumeText: resumeText,
+            isMaster: false
+        })
+        resumeVersionId = customVersion._id
     }
 
-    // If no resume file, check profile for master resume
+    // If no resume file uploaded, try to link the user's master resume
     if (!resumeText) {
-        const profile = await UserProfile.findOne({ user: req.user.id })
-        resumeText = profile?.masterResumeText || null
+        let masterVersion = await ResumeVersion.findOne({ user: req.user.id, isMaster: true })
+        
+        // If master version doesn't exist in ResumeVersion but masterResumeText exists in UserProfile, migrate it
+        if (!masterVersion) {
+            const profile = await UserProfile.findOne({ user: req.user.id })
+            if (profile && profile.masterResumeText) {
+                masterVersion = await ResumeVersion.create({
+                    user: req.user.id,
+                    name: "Master Resume",
+                    resumeText: profile.masterResumeText,
+                    isMaster: true
+                })
+            }
+        }
+
+        if (masterVersion) {
+            resumeText = masterVersion.resumeText
+            resumeVersionId = masterVersion._id
+        }
     }
 
     const application = await JobApplication.create({
@@ -56,6 +84,7 @@ async function createJobApplication(req, res) {
         status: status || 'saved',
         notes,
         resumeText,
+        resumeVersion: resumeVersionId,
         appliedDate: status === 'applied' ? new Date() : undefined
     })
 
@@ -322,12 +351,26 @@ async function generateTailoredResumeController(req, res) {
     const resumeText = await getResumeText(req.user.id, application)
     if (!resumeText) return res.status(400).json({ message: "No resume found." })
 
-    const pdfBuffer = await generateAtsResumePdf({
+    const { pdfBuffer, html } = await generateAtsResumePdf({
         resume: resumeText,
         jobDescription: application.jobDescription,
         company: application.company,
         role: application.role
     })
+
+    // Create tailored resume version
+    const tailoredVersion = await ResumeVersion.create({
+        user: req.user.id,
+        name: `${application.company} - ${application.role} Resume (Tailored)`,
+        resumeText: resumeText, // Storing original base text
+        tailoredHtml: html,
+        isMaster: false
+    })
+
+    // Update job application
+    application.resumeVersion = tailoredVersion._id
+    application.tailoredResumeHtml = html
+    await application.save()
 
     res.set({
         "Content-Type": "application/pdf",
@@ -424,6 +467,23 @@ async function getAnalytics(req, res) {
     })
 }
 
+/**
+ * @route POST /api/jobs/scrape
+ * Scrape a job posting from a URL
+ */
+async function scrapeJob(req, res) {
+    const { url } = req.body
+    if (!url) {
+        return res.status(400).json({ message: "URL is required." })
+    }
+    try {
+        const details = await scrapeJobDescription(url)
+        res.status(200).json({ message: "Job scraped successfully.", details })
+    } catch (error) {
+        res.status(500).json({ message: "Failed to scrape job details.", error: error.message })
+    }
+}
+
 module.exports = {
     createJobApplication,
     getAllJobApplications,
@@ -440,5 +500,6 @@ module.exports = {
     generateNegotiationController,
     generateTailoredResumeController,
     gradeMockAnswer,
-    getAnalytics
+    getAnalytics,
+    scrapeJob
 }

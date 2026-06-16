@@ -3,7 +3,7 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'
 import { Plus, Briefcase, ExternalLink, Clock, TrendingUp, ChevronRight, X, Upload, Building2, AlertCircle } from 'lucide-react'
 import { AppContext } from '../../app.context'
 import { AuthContext } from '../../features/auth/auth.context'
-import { getAllJobApplications, createJobApplication, updateApplicationStatus, deleteJobApplication } from '../../api'
+import { getAllJobApplications, createJobApplication, updateApplicationStatus, deleteJobApplication, scrapeJob } from '../../api'
 import { useNavigate } from 'react-router'
 import './dashboard.scss'
 
@@ -91,7 +91,32 @@ const AddJobModal = ({ onClose, onAdd }) => {
     const [form, setForm] = useState({ company: '', role: '', jobUrl: '', jobDescription: '' })
     const [resumeFile, setResumeFile] = useState(null)
     const [loading, setLoading] = useState(false)
+    const [scraping, setScraping] = useState(false)
     const [error, setError] = useState('')
+
+    const handleScrape = async () => {
+        if (!form.jobUrl) {
+            setError('Please enter a Job URL first.')
+            return
+        }
+        setScraping(true)
+        setError('')
+        try {
+            const data = await scrapeJob(form.jobUrl)
+            if (data.details) {
+                setForm(prev => ({
+                    ...prev,
+                    company: data.details.company || prev.company,
+                    role: data.details.role || prev.role,
+                    jobDescription: data.details.jobDescription || prev.jobDescription
+                }))
+            }
+        } catch (err) {
+            setError('Failed to auto-fetch job details. Please fill in manually.')
+        } finally {
+            setScraping(false)
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -123,6 +148,17 @@ const AddJobModal = ({ onClose, onAdd }) => {
                 </div>
 
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                    <div style={{ display: 'flex', gap: 10, alignItems: 'flex-end' }}>
+                        <div style={{ flex: 1 }}>
+                            <label className="input-label">Job URL / Link</label>
+                            <input className="input" placeholder="Paste LinkedIn, Indeed, or Naukri URL..." value={form.jobUrl}
+                                onChange={e => setForm(f => ({ ...f, jobUrl: e.target.value }))} />
+                        </div>
+                        <button type="button" className="btn-secondary" style={{ height: '42px', display: 'flex', alignItems: 'center', gap: 6 }} onClick={handleScrape} disabled={scraping}>
+                            {scraping ? <><span className="spinner" style={{ width: 14, height: 14 }} /> Fetching...</> : <><Building2 size={14} /> Auto-Fill</>}
+                        </button>
+                    </div>
+
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                         <div>
                             <label className="input-label">Company *</label>
@@ -134,12 +170,6 @@ const AddJobModal = ({ onClose, onAdd }) => {
                             <input className="input" placeholder="e.g. Software Engineer" value={form.role}
                                 onChange={e => setForm(f => ({ ...f, role: e.target.value }))} />
                         </div>
-                    </div>
-
-                    <div>
-                        <label className="input-label">Job URL</label>
-                        <input className="input" placeholder="https://..." value={form.jobUrl}
-                            onChange={e => setForm(f => ({ ...f, jobUrl: e.target.value }))} />
                     </div>
 
                     <div>

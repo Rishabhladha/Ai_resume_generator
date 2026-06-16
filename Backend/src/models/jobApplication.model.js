@@ -102,6 +102,9 @@ const jobApplicationSchema = new mongoose.Schema({
     resumeText: { type: String },
     selfDescription: { type: String },
 
+    // Link to specific resume version
+    resumeVersion: { type: mongoose.Schema.Types.ObjectId, ref: 'ResumeVersion' },
+
     // Generated assets (lazy — generated on demand)
     resumeAudit: resumeAuditSchema,
     interviewPrep: interviewPrepSchema,

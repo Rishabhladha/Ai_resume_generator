@@ -6,6 +6,7 @@ const profileController = require("../controllers/profile.controller")
 const profileRouter = express.Router()
 
 profileRouter.get("/", authMiddleware.authUser, profileController.getProfile)
+profileRouter.get("/resumes", authMiddleware.authUser, profileController.getResumeVersions)
 profileRouter.post("/", authMiddleware.authUser, upload.single("resume"), profileController.updateProfile)
 
 module.exports = profileRouter

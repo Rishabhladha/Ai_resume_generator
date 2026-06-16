@@ -10,6 +10,7 @@ jobRouter.get("/analytics", authMiddleware.authUser, jobController.getAnalytics)
 
 // CRUD
 jobRouter.post("/", authMiddleware.authUser, upload.single("resume"), jobController.createJobApplication)
+jobRouter.post("/scrape", authMiddleware.authUser, jobController.scrapeJob)
 jobRouter.get("/", authMiddleware.authUser, jobController.getAllJobApplications)
 jobRouter.get("/:id", authMiddleware.authUser, jobController.getJobApplicationById)
 jobRouter.patch("/:id/status", authMiddleware.authUser, jobController.updateApplicationStatus)

@@ -3,7 +3,8 @@ import { useParams, useNavigate } from 'react-router'
 import {
     ArrowLeft, Code2, MessageSquare, Brain, DollarSign,
     Link2, Mail, Trophy, ChevronDown, Copy, Check, Download,
-    Sparkles, Target, BookOpen, AlertTriangle, Building2, Zap
+    Sparkles, Target, BookOpen, AlertTriangle, Building2, Zap,
+    Mic, MicOff
 } from 'lucide-react'
 import { AppContext } from '../../app.context'
 import {
@@ -90,10 +91,65 @@ const MockInterviewTab = ({ questions, jobId, showToast }) => {
     const [grading, setGrading] = useState(false)
     const [grade, setGrade] = useState(null)
     const [session, setSession] = useState([]) // history
+    const [isListening, setIsListening] = useState(false)
+    const recognitionRef = useRef(null)
 
     const question = questions[currentQ]
 
+    useEffect(() => {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+        if (SpeechRecognition) {
+            const rec = new SpeechRecognition()
+            rec.continuous = true
+            rec.interimResults = true
+            rec.lang = 'en-US'
+
+            rec.onresult = (e) => {
+                let finalTranscript = ''
+                for (let i = e.resultIndex; i < e.results.length; i++) {
+                    if (e.results[i].isFinal) {
+                        finalTranscript += e.results[i][0].transcript + ' '
+                    }
+                }
+                if (finalTranscript) {
+                    setAnswer(prev => prev + (prev.endsWith(' ') || !prev ? '' : ' ') + finalTranscript)
+                }
+            }
+
+            rec.onerror = (e) => {
+                console.error("Speech recognition error", e)
+                setIsListening(false)
+            }
+
+            rec.onend = () => {
+                setIsListening(false)
+            }
+
+            recognitionRef.current = rec
+        }
+    }, [])
+
+    const toggleListening = () => {
+        if (!recognitionRef.current) {
+            showToast('Speech recognition is not supported in this browser.', 'error')
+            return
+        }
+
+        if (isListening) {
+            recognitionRef.current.stop()
+            setIsListening(false)
+        } else {
+            recognitionRef.current.start()
+            setIsListening(true)
+            showToast('Microphone active. Start speaking...', 'success')
+        }
+    }
+
     const submitAnswer = async () => {
+        if (isListening && recognitionRef.current) {
+            recognitionRef.current.stop()
+            setIsListening(false)
+        }
         if (!answer.trim()) return
         setGrading(true)
         try {
@@ -146,11 +202,45 @@ const MockInterviewTab = ({ questions, jobId, showToast }) => {
 
             {!grade ? (
                 <div className="mock-answer-area">
-                    <label className="input-label">Your Answer</label>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <label className="input-label" style={{ margin: 0 }}>Your Answer</label>
+                        {recognitionRef.current && (
+                            <button
+                                type="button"
+                                className={`btn-ghost btn-sm mic-btn ${isListening ? 'listening' : ''}`}
+                                onClick={toggleListening}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 6,
+                                    color: isListening ? 'var(--rose)' : 'var(--text-secondary)',
+                                    borderColor: isListening ? 'var(--rose)' : 'var(--border)',
+                                    background: isListening ? 'rgba(244,63,94,0.1)' : 'transparent',
+                                    padding: '6px 12px',
+                                    borderRadius: '6px',
+                                    fontSize: '12px',
+                                    fontWeight: 600,
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                {isListening ? (
+                                    <>
+                                        <span className="pulse-dot" style={{ width: 8, height: 8, background: 'var(--rose)', borderRadius: '50%', display: 'inline-block' }} />
+                                        Stop Recording
+                                    </>
+                                ) : (
+                                    <>
+                                        <Mic size={12} />
+                                        Speak Answer
+                                    </>
+                                )}
+                            </button>
+                        )}
+                    </div>
                     <textarea
                         className="input mock-textarea"
                         rows={6}
-                        placeholder="Type your answer here. Think aloud, explain your approach..."
+                        placeholder={isListening ? "Listening... Speak your answer now. Your voice is transcribed in real-time." : "Type your answer here or click 'Speak Answer' to speak it aloud..."}
                         value={answer}
                         onChange={e => setAnswer(e.target.value)}
                     />

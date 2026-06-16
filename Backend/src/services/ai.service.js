@@ -298,7 +298,49 @@ Return a JSON with "html" field containing the complete HTML document.`
     })
     await browser.close()
 
-    return pdfBuffer
+    return { pdfBuffer, html: result.html }
+}
+
+// ─── 11. Scrape Job Description from URL ──────────────────────────────────────
+async function scrapeJobDescription(url) {
+    const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    })
+    try {
+        const page = await browser.newPage()
+        await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+        await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 })
+        
+        const pageText = await page.evaluate(() => {
+            const elementsToRemove = document.querySelectorAll('script, style, noscript, iframe, nav, footer, header, .footer, .header, .nav')
+            elementsToRemove.forEach(el => el.remove())
+            return document.body.innerText
+        })
+        
+        await browser.close()
+
+        if (!pageText || pageText.trim().length === 0) {
+            throw new Error("No readable text content found on the page.")
+        }
+
+        const scrapeJobSchema = z.object({
+            company: z.string().describe("Name of the company hiring. If not found, use empty string"),
+            role: z.string().describe("Title/Role name of the job. If not found, use empty string"),
+            jobDescription: z.string().describe("Cleaned, readable job description, including responsibilities, requirements, and tech stack. Exclude headers, footers, sidebar contents, and unrelated text.")
+        })
+
+        const prompt = `You are a professional recruiting assistant. Extract the hiring company, role title, and cleaned job description from this scraped text.
+        
+Scraped Page Text:
+${pageText.substring(0, 10000)}
+
+Extract the information accurately.`
+
+        return await jsonGenerate(scrapeJobSchema, prompt)
+    } catch (error) {
+        if (browser) await browser.close()
+        throw error
+    }
 }
 
 module.exports = {
@@ -311,5 +353,6 @@ module.exports = {
     generateNegotiationCoach,
     extractProfileFromResume,
     gradeMockInterviewAnswer,
-    generateAtsResumePdf
+    generateAtsResumePdf,
+    scrapeJobDescription
 }

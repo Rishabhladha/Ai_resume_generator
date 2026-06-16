@@ -114,6 +114,16 @@ export const updateProfile = async (formData) => {
     return response.data
 }
 
+export const scrapeJob = async (url) => {
+    const response = await api.post("/api/jobs/scrape", { url })
+    return response.data
+}
+
+export const getResumeVersions = async () => {
+    const response = await api.get("/api/profile/resumes")
+    return response.data
+}
+
 // ─── Auth ────────────────────────────────────────────────────────────────────
 
 export const login = async ({ email, password }) => {
