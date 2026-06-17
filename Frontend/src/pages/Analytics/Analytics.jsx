@@ -32,9 +32,9 @@ const Analytics = () => {
 
     if (loading) return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <div className="skeleton" style={{ height: 120, borderRadius: 16 }} />
+            <div className="skeleton" style={{ height: 120, borderRadius: 0 }} />
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12 }}>
-                {[1, 2, 3, 4].map(i => <div key={i} className="skeleton" style={{ height: 90, borderRadius: 16 }} />)}
+                {[1, 2, 3, 4].map(i => <div key={i} className="skeleton" style={{ height: 90, borderRadius: 0 }} />)}
             </div>
         </div>
     )

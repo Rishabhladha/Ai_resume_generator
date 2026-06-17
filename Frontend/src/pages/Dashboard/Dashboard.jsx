@@ -290,14 +290,16 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-page">
-            <div className="page-header">
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div>
-                        <h1>Job Board</h1>
-                        <p>{totalApps} application{totalApps !== 1 ? 's' : ''} tracked</p>
-                    </div>
+            <div className="page-header" style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 24, alignItems: 'end' }}>
+                <div>
+                    <h1>Job Board</h1>
+                    <p style={{ fontFamily: 'JetBrains Mono', fontSize: 11, color: 'var(--accent-patina)', textTransform: 'uppercase', letterSpacing: '0.5px', marginTop: 4 }}>
+                        [ STATUS: ACTIVE // TRACKING {totalApps} APPLICATION{totalApps !== 1 ? 'S' : ''} ]
+                    </p>
+                </div>
+                <div>
                     <button className="btn-primary" onClick={() => setShowAddModal(true)}>
-                        <Plus size={16} /> Add Application
+                        <Plus size={14} /> Add Application
                     </button>
                 </div>
             </div>

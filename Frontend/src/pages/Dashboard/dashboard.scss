@@ -14,7 +14,7 @@
 
     .kanban-col-skeleton {
       background: var(--bg-card);
-      border-radius: var(--radius-lg);
+      border-radius: 0px;
       padding: 16px;
       border: 1px solid var(--border);
     }
@@ -23,31 +23,35 @@
   .kanban-col {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
+    border-radius: 0px;
     overflow: hidden;
     min-height: 200px;
 
     &__header {
       padding: 14px 16px 10px;
-      border-top: 3px solid transparent;
+      border-top: 2px solid transparent;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
     &__title {
-      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
 
     &__count {
-      background: rgba(255,255,255,0.08);
-      color: var(--text-muted);
-      font-size: 11px;
-      font-weight: 600;
-      padding: 1px 7px;
-      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 0px;
     }
 
     &__cards {
@@ -56,7 +60,7 @@
       transition: background 0.15s ease;
 
       &.dragging-over {
-        background: rgba(124, 58, 237, 0.04);
+        background: var(--accent-patina-dim);
       }
     }
 
@@ -67,15 +71,18 @@
       gap: 6px;
       padding: 24px 16px;
       color: var(--text-muted);
-      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
       text-align: center;
+      border: 1px dashed var(--border);
+      margin: 8px;
     }
   }
 
   .job-card {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
-    border-radius: var(--radius-md);
+    border-radius: 0px;
     padding: 12px;
     margin-bottom: 8px;
     cursor: pointer;
@@ -83,17 +90,17 @@
     position: relative;
 
     &:hover {
-      border-color: var(--border-hover);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-sm);
+      border-color: var(--accent-patina);
+      transform: none;
+      box-shadow: none;
 
       .job-card__delete { opacity: 1; }
     }
 
     &.dragging {
-      box-shadow: var(--shadow-md);
-      transform: rotate(2deg) scale(1.02);
-      border-color: var(--violet);
+      box-shadow: var(--shadow-brass);
+      transform: scale(1.01);
+      border-color: var(--accent-brass);
     }
 
     &__header {
@@ -104,34 +111,38 @@
     }
 
     &__company-icon {
-      width: 30px;
-      height: 30px;
-      background: linear-gradient(135deg, var(--violet), var(--cyan));
-      border-radius: 7px;
+      width: 28px;
+      height: 28px;
+      background: var(--accent-patina-dim);
+      border: 1px solid var(--accent-patina);
+      border-radius: 0px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
       font-weight: 700;
-      color: white;
+      color: var(--accent-patina);
       flex-shrink: 0;
     }
 
     &__meta { flex: 1; min-width: 0; }
 
     &__role {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-primary);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       margin-bottom: 2px;
+      text-transform: uppercase;
     }
 
     &__company {
-      font-size: 12px;
-      color: var(--text-muted);
+      font-size: 11px;
+      color: var(--text-secondary);
     }
 
     &__delete {
@@ -141,7 +152,7 @@
       cursor: pointer;
       color: var(--text-muted);
       padding: 2px;
-      border-radius: 4px;
+      border-radius: 0px;
       transition: var(--transition);
       flex-shrink: 0;
 
@@ -159,18 +170,20 @@
       display: flex;
       align-items: center;
       gap: 4px;
-      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
       color: var(--text-muted);
     }
   }
 
   .score-chip {
-    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
     font-weight: 700;
     padding: 1px 6px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 4px;
-    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.02);
+    border-radius: 0px;
+    border: 1px solid var(--border);
   }
 
   .upload-zone {
@@ -178,17 +191,18 @@
     align-items: center;
     gap: 10px;
     padding: 12px 14px;
-    border: 1px dashed var(--border-hover);
-    border-radius: var(--radius-sm);
+    border: 1px dashed var(--accent-patina);
+    border-radius: 0px;
     cursor: pointer;
-    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
     color: var(--text-secondary);
     transition: var(--transition);
 
     &:hover {
-      border-color: var(--violet);
-      color: var(--violet-light);
-      background: var(--violet-dim);
+      border-color: var(--accent-brass);
+      color: var(--accent-brass);
+      background: var(--accent-brass-dim);
     }
   }
 
@@ -198,9 +212,10 @@
     gap: 6px;
     padding: 10px 12px;
     background: var(--rose-dim);
-    border: 1px solid rgba(244,63,94,0.2);
-    border-radius: var(--radius-sm);
-    font-size: 13px;
-    color: var(--rose);
+    border: 1px solid rgba(166, 63, 63, 0.3);
+    border-radius: 0px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #a63f3f;
   }
 }

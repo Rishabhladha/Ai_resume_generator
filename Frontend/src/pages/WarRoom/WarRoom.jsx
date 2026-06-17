@@ -219,7 +219,7 @@ const MockInterviewTab = ({ questions, jobId, showToast }) => {
                                     borderColor: isListening ? 'var(--rose)' : 'var(--border)',
                                     background: isListening ? 'rgba(244,63,94,0.1)' : 'transparent',
                                     padding: '6px 12px',
-                                    borderRadius: '6px',
+                                    borderRadius: 0,
                                     fontSize: '12px',
                                     fontWeight: 600,
                                     cursor: 'pointer'
@@ -700,7 +700,7 @@ const WarRoom = () => {
                                             </div>
                                             <CopyButton text={msg.content} />
                                         </div>
-                                        <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: 8, padding: 14, fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.7, whiteSpace: 'pre-wrap', border: '1px solid var(--border)' }}>
+                                        <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: 0, padding: 14, fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.7, whiteSpace: 'pre-wrap', border: '1px solid var(--border)' }}>
                                             {msg.content}
                                         </div>
                                     </div>
@@ -753,7 +753,7 @@ const WarRoom = () => {
                                         </div>
                                     </div>
 
-                                    {salary.notes && <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.7, marginTop: 20, padding: '14px', background: 'rgba(0,0,0,0.3)', borderRadius: 8, border: '1px solid var(--border)' }}>{salary.notes}</p>}
+                                    {salary.notes && <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.7, marginTop: 20, padding: '14px', background: 'rgba(0,0,0,0.3)', borderRadius: 0, border: '1px solid var(--border)' }}>{salary.notes}</p>}
                                     <GenButton loading={generatingState['salary']} onClick={() => generate('salary', generateSalary)}>Refresh</GenButton>
                                 </div>
                             </div>
@@ -794,7 +794,7 @@ const WarRoom = () => {
                                     <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--emerald)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 12 }}>Skills to Add</p>
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                                         {linkedin.skillsToAdd?.map((s, i) => (
-                                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'var(--emerald-dim)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: 8, padding: '6px 12px' }}>
+                                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'var(--emerald-dim)', border: '1px solid rgba(90,135,103,0.2)', borderRadius: 0, padding: '6px 12px' }}>
                                                 <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--emerald)' }}>{s}</span>
                                                 <CopyButton text={s} size={11} />
                                             </div>
@@ -835,7 +835,7 @@ const WarRoom = () => {
                                         <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--violet-light)', textTransform: 'uppercase', letterSpacing: 0.5 }}>Negotiation Script</p>
                                         <CopyButton text={negotiate.script} />
                                     </div>
-                                    <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: 8, padding: 16, fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.8, whiteSpace: 'pre-wrap', border: '1px solid var(--border)', fontStyle: 'italic' }}>
+                                    <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: 0, padding: 16, fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.8, whiteSpace: 'pre-wrap', border: '1px solid var(--border)', fontStyle: 'italic' }}>
                                         {negotiate.script}
                                     </div>
                                 </div>

@@ -118,7 +118,7 @@ const ResumeStudio = () => {
                     {profile?.skills?.length > 0 && (
                         <div className="glass-card studio-skills">
                             <h2 style={{ fontSize: 16, marginBottom: 16 }}>
-                                <Sparkles size={16} style={{ display: 'inline', color: 'var(--violet-light)', marginRight: 6 }} />
+                                <Sparkles size={16} style={{ display: 'inline', color: 'var(--accent-brass)', marginRight: 6 }} />
                                 Auto-Extracted Skills ({profile.skills.length})
                             </h2>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -183,7 +183,7 @@ const ResumeStudio = () => {
                                                 <span className="stat-value">{v.stats.offersCount}</span>
                                             </div>
                                             <div className="stat-pill success-rate-pill" style={{
-                                                background: v.stats.successRate >= 70 ? 'rgba(16,185,129,0.1)' : v.stats.successRate >= 40 ? 'rgba(245,158,11,0.1)' : 'rgba(255,255,255,0.03)',
+                                                background: v.stats.successRate >= 70 ? 'var(--emerald-dim)' : v.stats.successRate >= 40 ? 'var(--amber-dim)' : 'rgba(255,255,255,0.02)',
                                                 color: v.stats.successRate >= 70 ? 'var(--emerald)' : v.stats.successRate >= 40 ? 'var(--amber)' : 'var(--text-muted)'
                                             }}>
                                                 <span className="stat-label">Success Rate</span>
@@ -205,7 +205,7 @@ const ResumeStudio = () => {
                         <div className="modal-header">
                             <div>
                                 <h2 style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                    <FileText size={18} color="var(--violet-light)" />
+                                    <FileText size={18} color="var(--accent-brass)" />
                                     {selectedVersion.name}
                                 </h2>
                                 <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>Created on {formatDate(selectedVersion.createdAt)}</p>

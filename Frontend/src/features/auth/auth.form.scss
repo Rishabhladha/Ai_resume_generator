@@ -1,12 +1,6 @@
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 @keyframes float {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-20px) scale(1.05); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
 }
 
 .auth-page {
@@ -29,25 +23,25 @@
     position: absolute;
     border-radius: 50%;
     filter: blur(80px);
-    opacity: 0.15;
-    animation: float 8s ease-in-out infinite;
+    opacity: 0.08;
+    animation: float 10s ease-in-out infinite;
 
     &--1 {
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, #7c3aed, transparent);
-      top: -100px;
-      left: -100px;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, var(--accent-patina), transparent);
+      top: -120px;
+      left: -120px;
       animation-delay: 0s;
     }
 
     &--2 {
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, #06b6d4, transparent);
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, var(--accent-brass), transparent);
       bottom: -100px;
       right: -100px;
-      animation-delay: 4s;
+      animation-delay: 5s;
     }
   }
 
@@ -55,13 +49,16 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 420px;
-    background: rgba(13, 22, 40, 0.9);
+    max-width: 440px;
+    background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
-    backdrop-filter: blur(24px);
+    border-radius: 0px;
     padding: 40px 36px;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+    box-shadow: none;
+
+    &:hover {
+      border-color: var(--accent-patina);
+    }
   }
 
   .auth-brand {
@@ -71,42 +68,44 @@
     margin-bottom: 28px;
 
     .auth-brand-icon {
-      width: 38px;
-      height: 38px;
-      background: linear-gradient(135deg, var(--violet), var(--cyan));
-      border-radius: 9px;
+      width: 36px;
+      height: 36px;
+      background: var(--accent-patina-dim);
+      border: 1px solid var(--accent-patina);
+      border-radius: 0px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .auth-brand-name {
-      font-size: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px;
       font-weight: 800;
-      background: linear-gradient(135deg, #fff, var(--violet-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
     }
   }
 
   .auth-title {
-    font-size: 26px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
     font-weight: 800;
     letter-spacing: -0.5px;
     margin-bottom: 6px;
+    text-transform: uppercase;
   }
 
   .auth-subtitle {
-    font-size: 14px;
-    color: var(--text-muted);
+    font-size: 13px;
+    color: var(--text-secondary);
     margin-bottom: 28px;
   }
 
   .auth-form {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 16px;
   }
 
   .auth-field {
@@ -128,34 +127,41 @@
     }
 
     .input-with-icon {
-      padding-left: 36px;
+      padding-left: 38px;
     }
   }
 
   .auth-error {
-    font-size: 13px;
-    color: var(--rose);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #a63f3f;
     padding: 8px 12px;
     background: var(--rose-dim);
-    border-radius: var(--radius-sm);
-    border: 1px solid rgba(244,63,94,0.2);
+    border-radius: 0px;
+    border: 1px solid rgba(166,63,63,0.3);
   }
 
   .auth-submit {
     width: 100%;
     justify-content: center;
     padding: 12px;
-    font-size: 15px;
+    font-size: 14px;
     margin-top: 4px;
   }
 
   .auth-switch {
     text-align: center;
-    font-size: 13px;
-    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-secondary);
     margin-top: 16px;
 
-    a { color: var(--violet-light); font-weight: 600; }
+    a { 
+      color: var(--accent-brass); 
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
   }
 
   .auth-features {
@@ -169,12 +175,13 @@
   }
 
   .auth-feature-chip {
-    font-size: 11px;
-    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-secondary);
     background: var(--bg-card);
     border: 1px solid var(--border);
     padding: 3px 9px;
-    border-radius: 999px;
+    border-radius: 0px;
     font-weight: 500;
   }
 }
