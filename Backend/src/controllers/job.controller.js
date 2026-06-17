@@ -351,7 +351,7 @@ async function generateTailoredResumeController(req, res) {
     const resumeText = await getResumeText(req.user.id, application)
     if (!resumeText) return res.status(400).json({ message: "No resume found." })
 
-    const { pdfBuffer, html } = await generateAtsResumePdf({
+    const { pdfBuffer, html, plainText } = await generateAtsResumePdf({
         resume: resumeText,
         jobDescription: application.jobDescription,
         company: application.company,
@@ -362,7 +362,7 @@ async function generateTailoredResumeController(req, res) {
     const tailoredVersion = await ResumeVersion.create({
         user: req.user.id,
         name: `${application.company} - ${application.role} Resume (Tailored)`,
-        resumeText: resumeText, // Storing original base text
+        resumeText: plainText, // Storing tailored plain text
         tailoredHtml: html,
         isMaster: false
     })

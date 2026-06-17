@@ -19,7 +19,7 @@ const Login = () => {
         setError('')
         try {
             await handleLogin({ email, password })
-            navigate('/')
+            navigate('/dashboard')
         } catch {
             setError('Invalid email or password.')
         } finally {
@@ -53,7 +53,12 @@ const Login = () => {
                         </div>
                     </div>
                     <div className="auth-field">
-                        <label className="input-label">Password</label>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                            <label className="input-label" style={{ margin: 0 }}>Password</label>
+                            <Link to="/forgot-password" style={{ fontSize: 12, color: 'var(--violet-light)', textDecoration: 'none' }}>
+                                Forgot password?
+                            </Link>
+                        </div>
                         <div className="input-icon-wrap">
                             <Lock size={15} className="input-icon" />
                             <input className="input input-with-icon" type="password" placeholder="••••••••"

@@ -21,11 +21,11 @@ authRouter.post("/login", authController.loginUserController)
 
 
 /**
- * @route GET /api/auth/logout
+ * @route POST /api/auth/logout
  * @description clear token from user cookie and add the token in blacklist
  * @access public
  */
-authRouter.get("/logout", authController.logoutUserController)
+authRouter.post("/logout", authController.logoutUserController)
 
 
 /**
@@ -34,6 +34,30 @@ authRouter.get("/logout", authController.logoutUserController)
  * @access private
  */
 authRouter.get("/get-me", authMiddleware.authUser, authController.getMeController)
+
+
+/**
+ * @route POST /api/auth/change-password
+ * @description Change password for the logged-in user (requires current password)
+ * @access Private
+ */
+authRouter.post("/change-password", authMiddleware.authUser, authController.changePasswordController)
+
+
+/**
+ * @route POST /api/auth/send-otp
+ * @description Send a 6-digit OTP to the user's email for password reset
+ * @access Public
+ */
+authRouter.post("/send-otp", authController.sendOtpController)
+
+
+/**
+ * @route POST /api/auth/verify-otp-reset
+ * @description Verify OTP and reset user password
+ * @access Public
+ */
+authRouter.post("/verify-otp-reset", authController.verifyOtpResetController)
 
 
 module.exports = authRouter

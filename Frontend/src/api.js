@@ -145,3 +145,18 @@ export const getMe = async () => {
     const response = await api.get("/api/auth/me")
     return response.data
 }
+
+export const changePassword = async ({ currentPassword, newPassword }) => {
+    const response = await api.post("/api/auth/change-password", { currentPassword, newPassword })
+    return response.data
+}
+
+export const sendOtp = async ({ email }) => {
+    const response = await api.post("/api/auth/send-otp", { email })
+    return response.data
+}
+
+export const verifyOtpReset = async ({ email, otp, newPassword }) => {
+    const response = await api.post("/api/auth/verify-otp-reset", { email, otp, newPassword })
+    return response.data
+}

@@ -254,98 +254,419 @@ Provide honest, constructive feedback. Be specific about what they got right and
 }
 
 // ─── 10. ATS-Optimized Resume PDF ────────────────────────────────────────────
+const resumeDataSchema = z.object({
+    fullName: z.string().describe("Candidate's full name"),
+    phone: z.string().describe("Phone number"),
+    email: z.string().describe("Email address"),
+    linkedin: z.string().describe("LinkedIn profile URL"),
+    github: z.string().describe("GitHub profile URL or other portfolio URL"),
+    location: z.string().describe("City, State"),
+    summary: z.string().describe("A professional summary of exactly 3 sentences max tailored to the target role"),
+    skills: z.object({
+        languages: z.array(z.string()).describe("Programming languages"),
+        frameworks: z.array(z.string()).describe("Frameworks and libraries"),
+        databases: z.array(z.string()).describe("Databases"),
+        tools: z.array(z.string()).describe("Tools and platforms"),
+        concepts: z.array(z.string()).describe("Core concepts")
+    }),
+    projects: z.array(z.object({
+        title: z.string().describe("Project title"),
+        subtitle: z.string().describe("One line scale/impact description"),
+        techStack: z.array(z.string()).describe("Technologies used in the project"),
+        bullets: z.array(z.string()).describe("Action verb + component + measurable result bullet points. Max 3 bullets.")
+    })).describe("List of professional/personal projects or work experiences"),
+    education: z.array(z.object({
+        degree: z.string().describe("Degree name"),
+        institution: z.string().describe("Institution name"),
+        year: z.string().describe("Graduation/Expected year"),
+        coursework: z.array(z.string()).describe("Relevant coursework list")
+    })),
+    certifications: z.array(z.object({
+        name: z.string().describe("Certification name"),
+        issuer: z.string().describe("Issuer"),
+        date: z.string().describe("Date")
+    }))
+})
+
+function formatResumeText(data) {
+    let text = "";
+    
+    // Header
+    if (data.fullName) {
+        text += `${data.fullName.toUpperCase()}\n`;
+    }
+    
+    const contactInfo = [
+        data.phone,
+        data.email,
+        data.linkedin,
+        data.github,
+        data.location
+    ].filter(Boolean).join(" | ");
+    
+    if (contactInfo) {
+        text += `${contactInfo}\n`;
+    }
+    text += `\n`;
+    
+    // Summary
+    text += `SUMMARY\n`;
+    if (data.summary) {
+        text += `${data.summary.trim()}\n`;
+    }
+    text += `\n`;
+    
+    // Technical Skills
+    text += `TECHNICAL SKILLS\n`;
+    if (data.skills) {
+        const s = data.skills;
+        if (s.languages && s.languages.length > 0) {
+            text += `Languages: ${s.languages.join(", ")}\n`;
+        }
+        if (s.frameworks && s.frameworks.length > 0) {
+            text += `Frameworks and Libraries: ${s.frameworks.join(", ")}\n`;
+        }
+        if (s.databases && s.databases.length > 0) {
+            text += `Databases: ${s.databases.join(", ")}\n`;
+        }
+        if (s.tools && s.tools.length > 0) {
+            text += `Tools and Platforms: ${s.tools.join(", ")}\n`;
+        }
+        if (s.concepts && s.concepts.length > 0) {
+            text += `Core Concepts: ${s.concepts.join(", ")}\n`;
+        }
+    }
+    text += `\n`;
+    
+    // Projects
+    text += `PROJECTS\n`;
+    if (data.projects && data.projects.length > 0) {
+        data.projects.forEach(proj => {
+            text += `${proj.title} — ${proj.subtitle}\n`;
+            if (proj.techStack && proj.techStack.length > 0) {
+                text += `Tech: ${proj.techStack.join(", ")}\n`;
+            }
+            if (proj.bullets && proj.bullets.length > 0) {
+                proj.bullets.forEach(bp => {
+                    let cleanBp = bp.trim();
+                    if (!cleanBp.startsWith("-")) {
+                        cleanBp = `- ${cleanBp}`;
+                    }
+                    text += `${cleanBp}\n`;
+                });
+            }
+            text += `\n`;
+        });
+    }
+    
+    // Education
+    text += `EDUCATION\n`;
+    if (data.education && data.education.length > 0) {
+        data.education.forEach(edu => {
+            text += `${edu.degree} | ${edu.institution} | ${edu.year}\n`;
+            if (edu.coursework && edu.coursework.length > 0) {
+                text += `Relevant Coursework: ${edu.coursework.join(", ")}\n`;
+            }
+            text += `\n`;
+        });
+    }
+    
+    // Certifications
+    if (data.certifications && data.certifications.length > 0) {
+        text += `CERTIFICATIONS\n`;
+        data.certifications.forEach(cert => {
+            text += `- ${cert.name} — ${cert.issuer} (${cert.date})\n`;
+        });
+    }
+    
+    return text.trim();
+}
+
+function renderResumeHtml(data) {
+    const { fullName, phone, email, linkedin, github, location, summary, skills, projects, education, certifications } = data;
+    
+    const contacts = [];
+    if (phone) contacts.push(phone);
+    if (email) contacts.push(`<a href="mailto:${email}">${email}</a>`);
+    if (linkedin) {
+        const displayLinkedin = linkedin.replace(/^https?:\/\/(www\.)?/, '');
+        contacts.push(`<a href="${linkedin}" target="_blank">${displayLinkedin}</a>`);
+    }
+    if (github) {
+        const displayGithub = github.replace(/^https?:\/\/(www\.)?/, '');
+        contacts.push(`<a href="${github}" target="_blank">${displayGithub}</a>`);
+    }
+    if (location) contacts.push(location);
+    
+    const contactsHtml = contacts.join(' &bull; ');
+    
+    let skillsHtml = '';
+    if (skills) {
+        const s = skills;
+        if (s.languages?.length) {
+            skillsHtml += `<div class="skill-row"><strong>Languages:</strong> ${s.languages.join(', ')}</div>`;
+        }
+        if (s.frameworks?.length) {
+            skillsHtml += `<div class="skill-row"><strong>Frameworks & Libraries:</strong> ${s.frameworks.join(', ')}</div>`;
+        }
+        if (s.databases?.length) {
+            skillsHtml += `<div class="skill-row"><strong>Databases:</strong> ${s.databases.join(', ')}</div>`;
+        }
+        if (s.tools?.length) {
+            skillsHtml += `<div class="skill-row"><strong>Tools & Platforms:</strong> ${s.tools.join(', ')}</div>`;
+        }
+        if (s.concepts?.length) {
+            skillsHtml += `<div class="skill-row"><strong>Core Concepts:</strong> ${s.concepts.join(', ')}</div>`;
+        }
+    }
+    
+    let projectsHtml = '';
+    if (projects?.length) {
+        projects.forEach(proj => {
+            const techLine = proj.techStack?.length ? `<div class="project-tech">Tech: ${proj.techStack.join(', ')}</div>` : '';
+            const bulletList = proj.bullets?.length ? 
+                `<ul>${proj.bullets.map(bp => `<li>${bp.replace(/^-\s*/, '')}</li>`).join('')}</ul>` : '';
+            
+            projectsHtml += `
+            <div class="project-item">
+                <div class="project-header">
+                    <span class="project-name">${proj.title}</span>
+                    <span class="project-desc">${proj.subtitle}</span>
+                </div>
+                ${techLine}
+                ${bulletList}
+            </div>`;
+        });
+    }
+    
+    let educationHtml = '';
+    if (education?.length) {
+        education.forEach(edu => {
+            const courseworkLine = edu.coursework?.length ? `<div class="edu-coursework"><strong>Relevant Coursework:</strong> ${edu.coursework.join(', ')}</div>` : '';
+            educationHtml += `
+            <div class="edu-item">
+                <div class="edu-header">
+                    <span class="edu-degree">${edu.degree}</span>
+                    <span class="edu-uni">${edu.institution}</span>
+                    <span class="edu-year">${edu.year}</span>
+                </div>
+                ${courseworkLine}
+            </div>`;
+        });
+    }
+    
+    let certificationsHtml = '';
+    if (certifications?.length) {
+        certificationsHtml = `
+        <ul class="cert-list">
+            ${certifications.map(cert => `<li><strong>${cert.name}</strong> &mdash; ${cert.issuer} (${cert.date})</li>`).join('')}
+        </ul>`;
+    }
+    
+    return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Resume - ${fullName}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+  }
+  .resume-body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 10pt;
+    line-height: 1.4;
+    color: #333333;
+    padding: 15mm;
+    background: #ffffff;
+    box-sizing: border-box;
+  }
+  .resume-body a {
+    color: #333333;
+    text-decoration: none;
+    border-bottom: 1px solid #cccccc;
+  }
+  .resume-body .header {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  .resume-body .name {
+    font-size: 20pt;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin: 0 0 5px 0;
+    color: #111111;
+  }
+  .resume-body .contacts {
+    font-size: 8.5pt;
+    color: #666666;
+  }
+  .resume-body .contacts a {
+    color: #555555;
+  }
+  
+  .resume-body .section-title {
+    font-size: 10.5pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #222222;
+    border-bottom: 1.5px solid #111111;
+    padding-bottom: 3px;
+    margin-top: 15px;
+    margin-bottom: 8px;
+  }
+  
+  .resume-body .summary {
+    font-size: 9.5pt;
+    text-align: justify;
+    margin-bottom: 10px;
+  }
+  
+  .resume-body .skill-row {
+    font-size: 9.5pt;
+    margin-bottom: 4px;
+  }
+  
+  .resume-body .project-item, .resume-body .edu-item {
+    margin-bottom: 10px;
+  }
+  .resume-body .project-header, .resume-body .edu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 9.5pt;
+  }
+  .resume-body .project-name, .resume-body .edu-degree {
+    font-weight: bold;
+    color: #111111;
+  }
+  .resume-body .project-desc, .resume-body .edu-uni {
+    color: #555555;
+    font-style: italic;
+    flex-grow: 1;
+    margin-left: 10px;
+  }
+  .resume-body .edu-year {
+    font-weight: bold;
+    color: #222222;
+  }
+  .resume-body .project-tech {
+    font-size: 8.5pt;
+    color: #666666;
+    margin-top: 2px;
+    font-family: Consolas, Monaco, monospace;
+  }
+  
+  .resume-body ul {
+    margin: 4px 0 0 0;
+    padding-left: 18px;
+  }
+  .resume-body li {
+    font-size: 9pt;
+    margin-bottom: 3px;
+    color: #333333;
+  }
+  .resume-body .edu-coursework {
+    font-size: 8.5pt;
+    color: #555555;
+    margin-top: 2px;
+  }
+  .resume-body .cert-list {
+    list-style-type: square;
+  }
+</style>
+</head>
+<body>
+  <div class="resume-body">
+    <div class="header">
+      <h1 class="name">${fullName}</h1>
+      <div class="contacts">${contactsHtml}</div>
+    </div>
+    
+    <div class="section-title">Summary</div>
+    <div class="summary">${summary}</div>
+    
+    <div class="section-title">Technical Skills</div>
+    <div class="skills-section">
+      ${skillsHtml}
+    </div>
+    
+    <div class="section-title">Projects & Experience</div>
+    <div class="projects-section">
+      ${projectsHtml}
+    </div>
+    
+    <div class="section-title">Education</div>
+    <div class="education-section">
+      ${educationHtml}
+    </div>
+    
+    ${certificationsHtml ? `
+    <div class="section-title">Certifications</div>
+    <div class="certifications-section">
+      ${certificationsHtml}
+    </div>
+    ` : ''}
+  </div>
+</body>
+</html>`;
+}
+
 async function generateAtsResumePdf({ resume, jobDescription, company, role }) {
-    const prompt = `System Prompt:
-You are an expert ATS resume writer. Convert the provided CV into a single-page, ATS-optimized resume. Output ONLY clean plain text — no markdown, no asterisks, no special characters, no tables, no columns. Use these exact section headers as plain text labels.
+    const prompt = `You are an ATS resume optimization engine. Extract the candidate's CV into a strict JSON object.
 
-HARD RULES:
-- Single page only. Max 550 words total.
-- Zero tables, zero columns, zero graphics, zero icons.
-- Section headers must be: SUMMARY, TECHNICAL SKILLS, PROJECTS, EDUCATION, CERTIFICATIONS
-- Every bullet point = one line only. Action verb + what you built + measurable result.
-- Skills section: use "Category: skill1, skill2, skill3" format on separate lines. No pipes.
-- For projects/experience: add a tech stack line under the title (e.g., "Tech: Node.js, MongoDB, React.js")
-- Summary: exactly 3–4 lines. Must include: target role, years/level of experience, 2 hard skills, 1 metric.
-- Remove all of: objective sections, "references available", hobbies, soft skills as a section, filler words like "passionate" or "hardworking".
-- Do not invent any skill, project, or metric not in the original CV.
-- Do not output any explanation, preamble, or commentary — only the resume.
+Your job is NOT to reformat — it is to OPTIMIZE the content for ATS scoring while staying 100% truthful to the original CV.
 
-User Prompt:
-Convert this CV into an ATS-optimized single-page resume using the rules given.
+OPTIMIZATION RULES (apply during extraction):
+
+1. SUMMARY
+   - Must start with exact job title from the target role (e.g., "Software Engineer")
+   - Must include: experience level, 2 specific technical skills, 1 quantified achievement
+   - Max 3 sentences, no fluff words
+
+2. SKILLS — add these keywords IF they are genuinely supported by the projects:
+   - If they used Socket.io for real-time → add "Real-Time Systems"
+   - If they used REST/Express → add "REST APIs"
+   - If they built multi-role auth → add "Authentication and Authorization"
+   - If they used Git/GitHub → add "Version Control (Git)"
+   - Only add what is truthfully evidenced in the CV
+
+3. PROJECTS
+   - projectTitle: just the name, no description sentence
+   - projectSubtitle: one line, include scale/impact (e.g., "Real-time ride platform serving 500+ users")
+   - Each bullet: MUST follow "Action Verb + Component + Measurable Result" format
+   - If a bullet has no number, add scope: "across 2 roles", "for 500+ users", "reducing X"
+   - Never repeat an action verb across bullets in the same project
+   - Max 3 bullets per project
+
+4. EDUCATION
+   - Include GPA only if provided
+   - Coursework must include: relevant CS fundamentals (OS, Networks, DBMS, DSA)
+
+5. CERTIFICATIONS
+   - Keep issuer and date
+
+TARGET ROLE: ${role || "Software Engineer"} at ${company || "Target Company"}
+
+Return ONLY valid JSON matching this exact schema.
 
 ORIGINAL CV:
 ---
 ${resume}
 ---
 
-Target Role: ${role || "Software Engineer / Distributed Systems Engineer"}
-Target Company: ${company || "Target Company"}
-Job Description Context:
-${jobDescription}
+Return ONLY the JSON object. No explanation. No markdown. No backticks.`
 
-STRICT OUTPUT FORMAT TO FOLLOW:
-
-[FULL NAME]
-[Phone] | [Email] | [LinkedIn] | [GitHub] | [City, State]
-
-SUMMARY
-[3-4 line paragraph. No bullets.]
-
-TECHNICAL SKILLS
-Languages: [comma separated]
-Frameworks and Libraries: [comma separated]
-Databases: [comma separated]
-Tools and Platforms: [comma separated]
-Core Concepts: [comma separated — spell out abbreviations e.g. Object-Oriented Programming (OOP)]
-
-PROJECTS
-[Project Name — One Line Description]
-Tech: [comma separated stack]
-- [Action verb + what + result with number]
-- [Action verb + what + result with number]
-- [Action verb + what + result with number]
-
-[Repeat for each project]
-
-EDUCATION
-[Degree Name] | [University] | [Expected/Graduation Year]
-Relevant Coursework: [comma separated]
-
-CERTIFICATIONS
-- [Name] — [Issuer] ([Month Year])
-
-OUTPUT ONLY THE RESUME. NO EXPLANATIONS.`
-
-    const schema = z.object({
-        resumeText: z.string().describe("The complete plain text of the ATS-optimized resume, strictly formatted as requested.")
-    })
-
-    const result = await jsonGenerate(schema, prompt)
-
-    const html = `<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Resume</title>
-<style>
-  @page {
-    size: A4;
-    margin: 15mm 15mm 15mm 15mm;
-  }
-  body {
-    font-family: 'Arial', 'Calibri', sans-serif;
-    font-size: 10.5pt;
-    line-height: 1.45;
-    color: #000000;
-    margin: 0;
-    padding: 0;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-  }
-</style>
-</head>
-<body>${result.resumeText}</body>
-</html>`
+    const result = await jsonGenerate(resumeDataSchema, prompt)
+    const plainText = formatResumeText(result)
+    const html = renderResumeHtml(result)
 
     // Generate PDF via Puppeteer
     const browser = await puppeteer.launch({
@@ -359,7 +680,7 @@ OUTPUT ONLY THE RESUME. NO EXPLANATIONS.`
     })
     await browser.close()
 
-    return { pdfBuffer, html }
+    return { pdfBuffer, html, plainText }
 }
 
 // ─── 11. Scrape Job Description from URL ──────────────────────────────────────

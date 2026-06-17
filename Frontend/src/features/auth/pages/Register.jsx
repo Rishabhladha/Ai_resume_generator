@@ -19,7 +19,7 @@ const Register = () => {
         setError('')
         try {
             await handleRegister(form)
-            navigate('/')
+            navigate('/dashboard')
         } catch (err) {
             setError('Account already exists with this email or username.')
         } finally {

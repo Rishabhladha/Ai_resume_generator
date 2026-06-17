@@ -92,6 +92,7 @@ const MockInterviewTab = ({ questions, jobId, showToast }) => {
     const [grade, setGrade] = useState(null)
     const [session, setSession] = useState([]) // history
     const [isListening, setIsListening] = useState(false)
+    const [hasSpeechSupport, setHasSpeechSupport] = useState(false)
     const recognitionRef = useRef(null)
 
     const question = questions[currentQ]
@@ -99,6 +100,7 @@ const MockInterviewTab = ({ questions, jobId, showToast }) => {
     useEffect(() => {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
         if (SpeechRecognition) {
+            setHasSpeechSupport(true)
             const rec = new SpeechRecognition()
             rec.continuous = true
             rec.interimResults = true
@@ -204,7 +206,7 @@ const MockInterviewTab = ({ questions, jobId, showToast }) => {
                 <div className="mock-answer-area">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <label className="input-label" style={{ margin: 0 }}>Your Answer</label>
-                        {recognitionRef.current && (
+                        {hasSpeechSupport && (
                             <button
                                 type="button"
                                 className={`btn-ghost btn-sm mic-btn ${isListening ? 'listening' : ''}`}
@@ -323,6 +325,7 @@ const WarRoom = () => {
     const [activeTab, setActiveTab] = useState('prep')
     const [job, setJob] = useState(currentJob)
     const [loading, setLoading] = useState(!currentJob)
+    const [downloadingResume, setDownloadingResume] = useState(false)
 
     useEffect(() => {
         if (!currentJob || currentJob._id !== id) {
@@ -383,6 +386,18 @@ const WarRoom = () => {
     const linkedin = job.linkedinTips
     const negotiate = job.negotiationCoach
 
+    const handleDownloadResume = async () => {
+        setDownloadingResume(true)
+        try {
+            await downloadTailoredResume(id, job.company, job.role)
+            showToast('ATS Resume downloaded successfully!', 'success')
+        } catch (err) {
+            showToast('Failed to download resume', 'error')
+        } finally {
+            setDownloadingResume(false)
+        }
+    }
+
     return (
         <div className="warroom-page">
             {/* Header */}
@@ -410,8 +425,21 @@ const WarRoom = () => {
                         </p>
                     </div>
                 </div>
-                <button className="btn-secondary btn-sm" onClick={() => downloadTailoredResume(id, job.company, job.role)}>
-                    <Download size={14} /> ATS Resume
+                <button 
+                    className="btn-secondary btn-sm" 
+                    onClick={handleDownloadResume} 
+                    disabled={downloadingResume}
+                >
+                    {downloadingResume ? (
+                        <>
+                            <span className="spinner" style={{ width: 14, height: 14, marginRight: 6 }} />
+                            Generating...
+                        </>
+                    ) : (
+                        <>
+                            <Download size={14} /> ATS Resume
+                        </>
+                    )}
                 </button>
             </div>
 
