@@ -10,19 +10,19 @@
 
   --border: rgba(255, 255, 255, 0.12); 
   --border-hover: rgba(255, 255, 255, 0.22);
-  --border-accent: #ff5722; /* Vibrant Orange */
+  --border-accent: #14b8a6; /* Vibrant Teal */
 
   --accent-ultraviolet: #52525b; /* Brighter Slate */
   --accent-ultraviolet-dim: rgba(82, 82, 91, 0.4);
-  --accent-cybervolt: #ff5722; /* Vibrant Orange */
-  --accent-cybervolt-dim: rgba(255, 87, 34, 0.15);
+  --accent-cybervolt: #14b8a6; /* Vibrant Teal */
+  --accent-cybervolt-dim: rgba(20, 184, 166, 0.15);
   --accent-acidmint: #ffcc80; /* Bright Warm Sand */
   --accent-acidmint-dim: rgba(255, 204, 128, 0.15);
 
   /* Mapping legacy variables */
-  --violet: #ff5722;
-  --violet-light: #ff7043;
-  --violet-dim: rgba(255, 87, 34, 0.15);
+  --violet: #14b8a6;
+  --violet-light: #2dd4bf;
+  --violet-dim: rgba(20, 184, 166, 0.15);
   --cyan: #0ea5e9; /* Brighter Ocean Blue */
   --cyan-dim: rgba(14, 165, 233, 0.15);
   --emerald: #10b981; /* Punchier Emerald */
@@ -146,9 +146,9 @@ code, pre { font-family: 'Inter', monospace; }
   box-shadow: var(--shadow-sm);
 
   &:hover:not(:disabled) {
-    background: #e64a19; /* Darker vibrant orange for hover */
+    background: #0d9488; /* Darker vibrant teal for hover */
     color: #fff;
-    border-color: #e64a19;
+    border-color: #0d9488;
     box-shadow: var(--shadow-md);
     transform: translateY(-1px);
   }
