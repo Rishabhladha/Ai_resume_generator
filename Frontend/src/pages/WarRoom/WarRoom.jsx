@@ -1,10 +1,10 @@
-import React, { useState, useContext, useEffect, useRef } from 'react'
+import { useState, useContext, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import {
     ArrowLeft, Code2, MessageSquare, Brain, DollarSign,
     Link2, Mail, Trophy, ChevronDown, Copy, Check, Download,
     Sparkles, Target, BookOpen, AlertTriangle, Building2, Zap,
-    Mic, MicOff
+    Mic
 } from 'lucide-react'
 import { AppContext } from '../../app.context'
 import {

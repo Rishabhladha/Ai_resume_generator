@@ -1,7 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { AppContext } from '../../app.context'
-import { updateProfile, getProfile, getResumeVersions } from '../../api'
-import { Upload, CheckCircle, FileText, Sparkles, TrendingUp, BarChart2, Clock, X, Info } from 'lucide-react'
+import { updateProfile, getResumeVersions } from '../../api'
+import { Upload, CheckCircle, FileText, Sparkles, TrendingUp, BarChart2, Clock, X } from 'lucide-react'
 import './resumestudio.scss'
 
 const ResumeStudio = () => {

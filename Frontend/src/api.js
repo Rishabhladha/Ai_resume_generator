@@ -29,10 +29,6 @@ export const updateApplicationStatus = async (id, status) => {
     return response.data
 }
 
-export const updateJobApplication = async (id, data) => {
-    const response = await api.patch(`/api/jobs/${id}`, data)
-    return response.data
-}
 
 export const deleteJobApplication = async (id) => {
     const response = await api.delete(`/api/jobs/${id}`)
