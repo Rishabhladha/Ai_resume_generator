@@ -23,30 +23,30 @@
     .warroom-company-icon {
       width: 44px;
       height: 44px;
-      background: var(--accent-patina-dim);
-      border: 1px solid var(--accent-patina);
-      border-radius: 0px;
+      background: var(--accent-ultraviolet-dim);
+      border: 1px solid var(--border-hover);
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Outfit', sans-serif;
       font-size: 20px;
-      font-weight: 800;
-      color: var(--accent-patina);
+      font-weight: 700;
+      color: var(--accent-cybervolt);
       flex-shrink: 0;
+      box-shadow: 0 0 10px rgba(247, 227, 0, 0.15);
     }
 
     .warroom-title {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Outfit', sans-serif;
       font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.3px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
       margin-bottom: 2px;
-      text-transform: uppercase;
     }
 
     .warroom-subtitle {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Outfit', sans-serif;
       font-size: 11px;
       color: var(--text-secondary);
       display: flex;
@@ -54,22 +54,23 @@
       gap: 8px;
 
       .status-select {
-        background: var(--bg-card);
+        background: rgba(12, 10, 18, 0.6);
         border: 1px solid var(--border);
-        border-radius: 0px;
-        padding: 2px 8px;
+        border-radius: var(--radius-sm);
+        padding: 4px 10px;
         font-size: 11px;
         font-weight: 700;
         outline: none;
         cursor: pointer;
-        font-family: 'JetBrains Mono', monospace;
+        font-family: 'Outfit', sans-serif;
         transition: var(--transition);
         text-transform: uppercase;
-        color: var(--accent-brass);
+        color: var(--accent-cybervolt);
+        box-shadow: var(--shadow-sm);
 
         &:hover {
-          background: var(--bg-card-hover);
-          border-color: var(--accent-patina);
+          background: rgba(12, 10, 18, 0.8);
+          border-color: var(--accent-cybervolt);
         }
 
         option {
@@ -96,9 +97,9 @@
     align-items: center;
     gap: 6px;
     padding: 10px 16px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Outfit', sans-serif;
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 600;
     color: var(--text-secondary);
     background: none;
     border: none;
@@ -106,16 +107,15 @@
     cursor: pointer;
     white-space: nowrap;
     transition: var(--transition);
-    margin-bottom: -1px;
-    text-transform: uppercase;
+    margin-bottom: -2px;
 
-    &:hover { color: var(--text-primary); border-bottom-color: var(--border); }
+    &:hover { color: var(--text-primary); border-bottom-color: var(--border-hover); }
 
     &.active {
-      color: var(--accent-brass);
-      border-bottom-color: var(--accent-brass);
-      font-weight: 800;
-      background: var(--accent-brass-dim);
+      color: var(--accent-cybervolt);
+      border-bottom-color: var(--accent-cybervolt);
+      background: rgba(247, 227, 0, 0.08);
+      border-radius: 4px 4px 0 0;
     }
   }
 
@@ -160,13 +160,21 @@
       align-items: center;
       gap: 24px;
       border: 1px solid var(--border);
+      border-radius: var(--radius-md);
       background: var(--bg-card);
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
 
     .audit-section-scores {
       padding: 20px;
       border: 1px solid var(--border);
+      border-radius: var(--radius-md);
       background: var(--bg-card);
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
 
     .audit-keywords {
@@ -176,12 +184,16 @@
     }
   }
 
-  /* Laboratory Monitoring Mock Practise Console */
+  /* Laboratory Monitoring Mock Practice Console */
   .mock-interview {
     max-width: 760px;
     border: 1px solid var(--border);
+    border-radius: var(--radius-md);
     background: var(--bg-card);
     padding: 28px;
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 
     .mock-header {
       display: flex;
@@ -197,7 +209,7 @@
         gap: 12px;
 
         .mock-q-count {
-          font-family: 'JetBrains Mono', monospace;
+          font-family: 'Outfit', sans-serif;
           font-size: 12px;
           font-weight: 700;
           color: var(--text-secondary);
@@ -207,18 +219,18 @@
     }
 
     .mock-question-card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--accent-patina);
-      border-radius: 0px;
+      background: rgba(12, 10, 18, 0.4);
+      border: 1px solid var(--border-hover);
+      border-radius: var(--radius-sm);
       padding: 24px;
       margin-bottom: 20px;
 
       .mock-q-badge { margin-bottom: 12px; }
 
       .mock-question {
-        font-family: 'JetBrains Mono', monospace;
+        font-family: 'Outfit', sans-serif;
         font-size: 16px;
-        font-weight: 700;
+        font-weight: 600;
         line-height: 1.5;
         color: var(--text-primary);
       }
@@ -236,9 +248,9 @@
     }
 
     .mock-grade {
-      background: var(--bg-secondary);
-      border: 1px solid var(--accent-brass);
-      border-radius: 0px;
+      background: rgba(12, 10, 18, 0.4);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
       padding: 24px;
 
       .mock-score-row {
@@ -256,15 +268,15 @@
           flex-shrink: 0;
 
           .mock-score-val {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Outfit', sans-serif;
             font-size: 48px;
-            font-weight: 800;
+            font-weight: 700;
             line-height: 1;
-            color: var(--accent-brass);
+            color: var(--accent-cybervolt);
           }
 
           .mock-score-label {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Outfit', sans-serif;
             font-size: 16px;
             color: var(--text-muted);
           }
@@ -283,8 +295,12 @@
   .cover-wrap {
     max-width: 760px;
     border: 1px solid var(--border);
+    border-radius: var(--radius-md);
     background: var(--bg-card);
     padding: 28px;
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
 
   /* Salary Insights Deck */
@@ -294,7 +310,11 @@
     .salary-main {
       padding: 28px;
       border: 1px solid var(--border);
+      border-radius: var(--radius-md);
       background: var(--bg-card);
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
 
     .salary-range {
@@ -316,13 +336,13 @@
         .salary-amount {
           display: block;
           font-size: 18px;
-          font-weight: 800;
+          font-weight: 700;
           color: var(--text-primary);
-          font-family: 'JetBrains Mono', monospace;
+          font-family: 'Outfit', sans-serif;
         }
 
         .salary-label {
-          font-family: 'JetBrains Mono', monospace;
+          font-family: 'Outfit', sans-serif;
           font-size: 10px;
           color: var(--text-muted);
           text-transform: uppercase;
@@ -335,14 +355,16 @@
 
         .salary-bar {
           height: 10px;
-          background: var(--border);
-          border: 1px solid var(--border-hover);
+          background: var(--bg-secondary);
+          border: 1px solid var(--border);
+          border-radius: 5px;
           position: relative;
 
           .salary-bar-fill {
-            background: var(--accent-patina);
+            background: var(--accent-cybervolt);
             height: 100%;
             width: 60%;
+            border-radius: 5px;
           }
 
           .salary-mid-marker {
@@ -353,10 +375,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Outfit', sans-serif;
             font-size: 10px;
             font-weight: 700;
-            color: var(--accent-brass);
+            color: var(--accent-cybervolt);
             white-space: nowrap;
           }
         }
@@ -370,11 +392,11 @@
     align-items: center;
     gap: 6px;
     padding: 8px 16px;
-    background: var(--accent-brass-dim);
-    border: 1px solid var(--accent-brass);
-    border-radius: 0px;
-    color: var(--accent-brass);
-    font-family: 'JetBrains Mono', monospace;
+    background: var(--accent-cybervolt-dim);
+    border: 1px solid var(--accent-cybervolt);
+    border-radius: var(--radius-sm);
+    color: var(--accent-cybervolt);
+    font-family: 'Outfit', sans-serif;
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
@@ -384,7 +406,7 @@
 
     &:hover:not(:disabled) {
       background: transparent;
-      box-shadow: var(--shadow-brass);
+      box-shadow: var(--shadow-cybervolt);
     }
 
     &:disabled { opacity: 0.4; cursor: not-allowed; }

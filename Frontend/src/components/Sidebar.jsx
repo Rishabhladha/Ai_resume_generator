@@ -67,18 +67,19 @@ const ChangePasswordModal = ({ onClose }) => {
     return (
         <div
             style={{
-                position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)',
-                backdropFilter: 'blur(4px)', zIndex: 300,
+                position: 'fixed', inset: 0, background: 'rgba(10,10,12,0.85)',
+                backdropFilter: 'blur(10px)', zIndex: 300,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                padding: 24, animation: 'fadeIn 0.15s ease'
+                padding: 24, animation: 'fadeIn 0.25s ease'
             }}
             onClick={onClose}
         >
             <div
                 style={{
-                    background: 'var(--bg-secondary)', border: '1px solid var(--border)',
-                    borderRadius: 0, width: '100%', maxWidth: 420,
-                    padding: 32, animation: 'slideUp 0.2s ease'
+                    background: 'var(--bg-secondary)', border: '1px solid var(--border-hover)',
+                    borderRadius: 'var(--radius-lg)', width: '100%', maxWidth: 420,
+                    padding: 32, animation: 'slideUp 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)',
+                    boxShadow: 'var(--shadow-lg)'
                 }}
                 onClick={e => e.stopPropagation()}
             >
@@ -86,14 +87,14 @@ const ChangePasswordModal = ({ onClose }) => {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                         <div style={{
-                            width: 36, height: 36, borderRadius: 0,
-                            background: 'var(--accent-brass-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            border: '1px solid var(--accent-brass)'
+                            width: 36, height: 36, borderRadius: 8,
+                            background: 'var(--accent-cybervolt-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            border: '1px solid var(--accent-cybervolt)'
                         }}>
-                            <KeyRound size={16} color="var(--accent-brass)" />
+                            <KeyRound size={16} color="var(--accent-cybervolt)" />
                         </div>
                         <div>
-                            <h2 style={{ fontSize: 17, fontWeight: 700, margin: 0 }}>Change Password</h2>
+                            <h2 style={{ fontSize: 17, fontWeight: 700, margin: 0, fontFamily: 'Outfit, sans-serif' }}>Change Password</h2>
                             <p style={{ fontSize: 12, color: 'var(--text-muted)', margin: 0 }}>Enter your current password to continue</p>
                         </div>
                     </div>
@@ -103,7 +104,7 @@ const ChangePasswordModal = ({ onClose }) => {
                 {success ? (
                     <div style={{
                         marginTop: 24, padding: '20px', background: 'var(--emerald-dim)',
-                        border: '1px solid rgba(90,135,103,0.3)', borderRadius: 0,
+                        border: '1px solid rgba(90,135,103,0.3)', borderRadius: 'var(--radius-md)',
                         textAlign: 'center'
                     }}>
                         <div style={{ fontSize: 28, marginBottom: 8 }}>✅</div>
@@ -172,7 +173,7 @@ const ChangePasswordModal = ({ onClose }) => {
                                         const colors = ['var(--rose)', 'var(--amber)', 'var(--cyan)', 'var(--emerald)']
                                         return (
                                             <div key={i} style={{
-                                                flex: 1, height: 4, borderRadius: 0,
+                                                flex: 1, height: 4, borderRadius: 4,
                                                 background: i < strength ? colors[strength - 1] : 'var(--border)',
                                                 transition: 'all 0.2s ease'
                                             }} />
@@ -204,7 +205,7 @@ const ChangePasswordModal = ({ onClose }) => {
                         {error && (
                             <div style={{
                                 padding: '10px 14px', background: 'var(--rose-dim)',
-                                border: '1px solid rgba(166,63,63,0.3)', borderRadius: 0,
+                                border: '1px solid rgba(166,63,63,0.3)', borderRadius: 8,
                                 fontSize: 13, color: 'var(--rose)'
                             }}>
                                 {error}
@@ -242,7 +243,7 @@ const Sidebar = () => {
         <aside className="app-sidebar">
             <div className="sidebar-brand">
                 <div className="brand-icon">
-                    <Zap size={18} color="var(--accent-patina)" />
+                    <Zap size={18} color="var(--accent-cybervolt)" />
                 </div>
                 <span className="brand-name">CareerOS</span>
             </div>

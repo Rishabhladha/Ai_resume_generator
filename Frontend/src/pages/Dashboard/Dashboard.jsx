@@ -293,7 +293,7 @@ const Dashboard = () => {
             <div className="page-header" style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 24, alignItems: 'end' }}>
                 <div>
                     <h1>Job Board</h1>
-                    <p style={{ fontFamily: 'JetBrains Mono', fontSize: 11, color: 'var(--accent-patina)', textTransform: 'uppercase', letterSpacing: '0.5px', marginTop: 4 }}>
+                    <p style={{ fontFamily: 'Outfit, sans-serif', fontSize: 12, color: 'var(--accent-acidmint)', textTransform: 'uppercase', letterSpacing: '0.5px', marginTop: 4 }}>
                         [ STATUS: ACTIVE // TRACKING {totalApps} APPLICATION{totalApps !== 1 ? 'S' : ''} ]
                     </p>
                 </div>

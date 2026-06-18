@@ -14,7 +14,7 @@
 
     .kanban-col-skeleton {
       background: var(--bg-card);
-      border-radius: 0px;
+      border-radius: var(--radius-md);
       padding: 16px;
       border: 1px solid var(--border);
     }
@@ -23,9 +23,12 @@
   .kanban-col {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 0px;
+    border-radius: var(--radius-md);
     overflow: hidden;
     min-height: 200px;
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 
     &__header {
       padding: 14px 16px 10px;
@@ -36,31 +39,31 @@
     }
 
     &__title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
       font-weight: 700;
       letter-spacing: 0.5px;
       text-transform: uppercase;
     }
 
     &__count {
-      background: rgba(255,255,255,0.05);
+      background: var(--bg-secondary);
       border: 1px solid var(--border);
       color: var(--text-secondary);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
       font-weight: 700;
-      padding: 1px 6px;
-      border-radius: 0px;
+      padding: 2px 8px;
+      border-radius: 4px;
     }
 
     &__cards {
       padding: 8px 10px 12px;
       min-height: 80px;
-      transition: background 0.15s ease;
+      transition: background 0.2s ease;
 
       &.dragging-over {
-        background: var(--accent-patina-dim);
+        background: var(--accent-ultraviolet-dim);
       }
     }
 
@@ -71,36 +74,39 @@
       gap: 6px;
       padding: 24px 16px;
       color: var(--text-muted);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Outfit', sans-serif;
       font-size: 11px;
       text-align: center;
       border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
       margin: 8px;
     }
   }
 
   .job-card {
-    background: var(--bg-secondary);
+    background: rgba(12, 10, 18, 0.4);
     border: 1px solid var(--border);
-    border-radius: 0px;
-    padding: 12px;
+    border-radius: var(--radius-sm);
+    padding: 14px 12px;
     margin-bottom: 8px;
     cursor: pointer;
     transition: var(--transition);
     position: relative;
+    box-shadow: var(--shadow-sm);
 
     &:hover {
-      border-color: var(--accent-patina);
-      transform: none;
-      box-shadow: none;
+      border-color: var(--border-hover);
+      background: rgba(12, 10, 18, 0.6);
+      box-shadow: var(--shadow-md), var(--shadow-lg);
+      transform: translateY(-2px);
 
       .job-card__delete { opacity: 1; }
     }
 
     &.dragging {
-      box-shadow: var(--shadow-brass);
-      transform: scale(1.01);
-      border-color: var(--accent-brass);
+      box-shadow: var(--shadow-cybervolt);
+      transform: scale(1.02);
+      border-color: var(--accent-cybervolt);
     }
 
     &__header {
@@ -113,31 +119,30 @@
     &__company-icon {
       width: 28px;
       height: 28px;
-      background: var(--accent-patina-dim);
-      border: 1px solid var(--accent-patina);
-      border-radius: 0px;
+      background: var(--accent-ultraviolet-dim);
+      border: 1px solid var(--border);
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Outfit', sans-serif;
       font-size: 12px;
       font-weight: 700;
-      color: var(--accent-patina);
+      color: var(--accent-cybervolt);
       flex-shrink: 0;
     }
 
     &__meta { flex: 1; min-width: 0; }
 
     &__role {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
       font-weight: 700;
       color: var(--text-primary);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       margin-bottom: 2px;
-      text-transform: uppercase;
     }
 
     &__company {
@@ -152,7 +157,7 @@
       cursor: pointer;
       color: var(--text-muted);
       padding: 2px;
-      border-radius: 0px;
+      border-radius: 4px;
       transition: var(--transition);
       flex-shrink: 0;
 
@@ -170,19 +175,19 @@
       display: flex;
       align-items: center;
       gap: 4px;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Outfit', sans-serif;
       font-size: 10px;
       color: var(--text-muted);
     }
   }
 
   .score-chip {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Outfit', sans-serif;
     font-size: 10px;
     font-weight: 700;
-    padding: 1px 6px;
-    background: rgba(255,255,255,0.02);
-    border-radius: 0px;
+    padding: 2px 6px;
+    background: var(--bg-card);
+    border-radius: 4px;
     border: 1px solid var(--border);
   }
 
@@ -191,18 +196,20 @@
     align-items: center;
     gap: 10px;
     padding: 12px 14px;
-    border: 1px dashed var(--accent-patina);
-    border-radius: 0px;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
     color: var(--text-secondary);
     transition: var(--transition);
+    box-shadow: var(--shadow-sm);
 
     &:hover {
-      border-color: var(--accent-brass);
-      color: var(--accent-brass);
-      background: var(--accent-brass-dim);
+      border-color: var(--accent-cybervolt);
+      color: var(--accent-cybervolt);
+      background: var(--accent-cybervolt-dim);
+      box-shadow: var(--shadow-cybervolt);
     }
   }
 
@@ -212,10 +219,10 @@
     gap: 6px;
     padding: 10px 12px;
     background: var(--rose-dim);
-    border: 1px solid rgba(166, 63, 63, 0.3);
-    border-radius: 0px;
-    font-family: 'JetBrains Mono', monospace;
+    border: 1px solid rgba(255, 69, 69, 0.3);
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
     font-size: 12px;
-    color: #a63f3f;
+    color: #ff4545;
   }
 }

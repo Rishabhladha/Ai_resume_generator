@@ -118,7 +118,7 @@ const ResumeStudio = () => {
                     {profile?.skills?.length > 0 && (
                         <div className="glass-card studio-skills">
                             <h2 style={{ fontSize: 16, marginBottom: 16 }}>
-                                <Sparkles size={16} style={{ display: 'inline', color: 'var(--accent-brass)', marginRight: 6 }} />
+                                <Sparkles size={16} style={{ display: 'inline', color: 'var(--accent-cybervolt)', marginRight: 6 }} />
                                 Auto-Extracted Skills ({profile.skills.length})
                             </h2>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -205,7 +205,7 @@ const ResumeStudio = () => {
                         <div className="modal-header">
                             <div>
                                 <h2 style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                    <FileText size={18} color="var(--accent-brass)" />
+                                    <FileText size={18} color="var(--accent-cybervolt)" />
                                     {selectedVersion.name}
                                 </h2>
                                 <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>Created on {formatDate(selectedVersion.createdAt)}</p>
