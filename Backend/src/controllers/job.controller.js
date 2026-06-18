@@ -467,6 +467,88 @@ async function getAnalytics(req, res) {
     })
 }
 
+const dns = require("dns").promises
+const net = require("net")
+
+function isPrivateIp(ip) {
+    if (ip.includes('.')) {
+        const parts = ip.split('.').map(Number)
+        if (parts.length !== 4 || parts.some(isNaN)) return true
+        
+        // Loopback (127.0.0.0/8)
+        if (parts[0] === 127) return true
+        
+        // Private Class A (10.0.0.0/8)
+        if (parts[0] === 10) return true
+        
+        // Private Class B (172.16.0.0/12)
+        if (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) return true
+        
+        // Private Class C (192.168.0.0/16)
+        if (parts[0] === 192 && parts[1] === 168) return true
+        
+        // Link-local (169.254.0.0/16)
+        if (parts[0] === 169 && parts[1] === 254) return true
+        
+        // Unspecified (0.0.0.0)
+        if (parts[0] === 0) return true
+        
+        // Multicast/Broadcast (224.0.0.0/4)
+        if (parts[0] >= 224) return true
+        
+        return false
+    }
+    
+    if (ip.includes(':')) {
+        const normalized = ip.toLowerCase()
+        if (normalized === '::1' || normalized === '::') return true
+        if (normalized.startsWith('fe80:')) return true // Link-local
+        if (normalized.startsWith('fc00:') || normalized.startsWith('fd00:')) return true // Unique local
+        if (normalized.startsWith('ff')) return true // Multicast
+        return false
+    }
+    
+    return true // Block anything else
+}
+
+async function validateUrlForScraping(urlStr) {
+    try {
+        const parsed = new URL(urlStr)
+        if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+            return { valid: false, reason: "Only http and https protocols are allowed." }
+        }
+        
+        const hostname = parsed.hostname
+        if (!hostname) {
+            return { valid: false, reason: "Invalid hostname." }
+        }
+        
+        if (net.isIP(hostname)) {
+            if (isPrivateIp(hostname)) {
+                return { valid: false, reason: "Scraping local or private IP addresses is forbidden." }
+            }
+        } else {
+            const addresses = await dns.resolve(hostname).catch(() => [])
+            if (addresses.length === 0) {
+                const lookup = await dns.lookup(hostname).catch(() => null)
+                if (lookup && lookup.address) {
+                    addresses.push(lookup.address)
+                }
+            }
+            
+            for (const addr of addresses) {
+                if (isPrivateIp(addr)) {
+                    return { valid: false, reason: "Hostname resolves to a local or private IP address." }
+                }
+            }
+        }
+        
+        return { valid: true }
+    } catch (e) {
+        return { valid: false, reason: "Malformed URL." }
+    }
+}
+
 /**
  * @route POST /api/jobs/scrape
  * Scrape a job posting from a URL
@@ -476,6 +558,12 @@ async function scrapeJob(req, res) {
     if (!url) {
         return res.status(400).json({ message: "URL is required." })
     }
+    
+    const validation = await validateUrlForScraping(url)
+    if (!validation.valid) {
+        return res.status(400).json({ message: validation.reason })
+    }
+
     try {
         const details = await scrapeJobDescription(url)
         res.status(200).json({ message: "Job scraped successfully.", details })

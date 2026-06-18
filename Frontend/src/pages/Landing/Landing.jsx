@@ -312,7 +312,6 @@ const Landing = () => {
                     <h2 className="section-title">From upload to offer<br />in 4 simple steps</h2>
 
                     <div className="steps-container">
-                        <div className="steps-line" />
                         <div className="steps-grid">
                             <StepCard
                                 number="01"

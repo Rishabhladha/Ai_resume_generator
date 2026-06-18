@@ -686,12 +686,30 @@ Return ONLY the JSON object. No explanation. No markdown. No backticks.`
 // ─── 11. Scrape Job Description from URL ──────────────────────────────────────
 async function scrapeJobDescription(url) {
     const browser = await puppeteer.launch({
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        ignoreHTTPSErrors: true
     })
     try {
         const page = await browser.newPage()
+        
+        // Hide webdriver trace
+        await page.evaluateOnNewDocument(() => {
+            Object.defineProperty(navigator, 'webdriver', {
+                get: () => undefined
+            })
+        })
+        
         await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-        await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 })
+        await page.setViewport({ width: 1280, height: 800 })
+        
+        try {
+            await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 15000 })
+        } catch (gotoError) {
+            console.warn("Navigation timeout/error, attempting to extract text anyway:", gotoError.message)
+        }
+        
+        // Wait a brief moment for JS rendering
+        await new Promise(r => setTimeout(r, 2000))
         
         const pageText = await page.evaluate(() => {
             const elementsToRemove = document.querySelectorAll('script, style, noscript, iframe, nav, footer, header, .footer, .header, .nav')
