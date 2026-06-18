@@ -27,8 +27,7 @@
     overflow: hidden;
     min-height: 200px;
     box-shadow: var(--shadow-sm);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    /* Removed heavy glassmorphism blur for architectural solid look */
 
     &__header {
       padding: 14px 16px 10px;
@@ -63,7 +62,7 @@
       transition: background 0.2s ease;
 
       &.dragging-over {
-        background: var(--accent-ultraviolet-dim);
+        background: var(--bg-card-hover);
       }
     }
 
@@ -84,7 +83,7 @@
   }
 
   .job-card {
-    background: rgba(12, 10, 18, 0.4);
+    background: var(--bg-secondary);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     padding: 14px 12px;
@@ -96,15 +95,15 @@
 
     &:hover {
       border-color: var(--border-hover);
-      background: rgba(12, 10, 18, 0.6);
-      box-shadow: var(--shadow-md), var(--shadow-lg);
+      background: var(--bg-card-hover);
+      box-shadow: var(--shadow-md);
       transform: translateY(-2px);
 
       .job-card__delete { opacity: 1; }
     }
 
     &.dragging {
-      box-shadow: var(--shadow-cybervolt);
+      box-shadow: var(--shadow-md);
       transform: scale(1.02);
       border-color: var(--accent-cybervolt);
     }
@@ -207,9 +206,9 @@
 
     &:hover {
       border-color: var(--accent-cybervolt);
-      color: var(--accent-cybervolt);
+      color: var(--text-primary);
       background: var(--accent-cybervolt-dim);
-      box-shadow: var(--shadow-cybervolt);
+      box-shadow: var(--shadow-md);
     }
   }
 
@@ -219,10 +218,10 @@
     gap: 6px;
     padding: 10px 12px;
     background: var(--rose-dim);
-    border: 1px solid rgba(255, 69, 69, 0.3);
+    border: 1px solid var(--rose);
     border-radius: 8px;
     font-family: 'Outfit', sans-serif;
     font-size: 12px;
-    color: #ff4545;
+    color: var(--rose);
   }
 }

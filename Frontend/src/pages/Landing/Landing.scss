@@ -18,7 +18,7 @@
   transition: var(--transition);
 
   &.scrolled {
-    background: #0d0b11;
+    background: var(--bg-secondary);
     border-bottom: 2px solid var(--border);
     padding: 14px 0;
   }
@@ -204,12 +204,14 @@
     background: radial-gradient(circle, var(--accent-ultraviolet) 0%, transparent 70%);
     top: -100px;
     left: -200px;
+    display: none; /* Hide glow for new solid theme */
   }
 
   &--right {
     background: radial-gradient(circle, var(--accent-cybervolt) 0%, transparent 70%);
     bottom: -100px;
     right: -200px;
+    display: none; /* Hide glow for new solid theme */
   }
 }
 
@@ -217,8 +219,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(46, 26, 71, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(46, 26, 71, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 100%);
   pointer-events: none;
@@ -613,7 +615,7 @@
 
 /* ── Features Grid (Asymmetric layout) ───────────────────────────── */
 .features-section {
-  background: #0d0b11;
+  background: var(--bg-secondary);
   border-top: 2px solid var(--border);
   border-bottom: 2px solid var(--border);
 }
@@ -784,7 +786,7 @@
 
 /* ── Testimonials ──────────────────────────────────────────────── */
 .testimonials-section {
-  background: #0d0b11;
+  background: var(--bg-secondary);
   border-top: 2px solid var(--border);
   border-bottom: 2px solid var(--border);
 }
