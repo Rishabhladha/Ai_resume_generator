@@ -142,7 +142,7 @@ export const logout = async () => {
 }
 
 export const getMe = async () => {
-    const response = await api.get("/api/auth/me")
+    const response = await api.get("/api/auth/get-me")
     return response.data
 }
 

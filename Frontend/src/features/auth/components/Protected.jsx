@@ -1,6 +1,6 @@
 import { useAuth } from "../hooks/useAuth"
 import { Navigate } from "react-router"
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import Sidebar from '../../../components/Sidebar'
 import Toast from '../../../components/Toast'
 import { AppContext } from '../../../app.context'
