@@ -6,7 +6,7 @@ import {
     FileText,
     BarChart3,
     LogOut,
-    Zap,
+
     User,
     Lock,
     X,
@@ -242,8 +242,8 @@ const Sidebar = () => {
     return (
         <aside className="app-sidebar">
             <div className="sidebar-brand">
-                <div className="brand-icon">
-                    <Zap size={18} color="var(--accent-cybervolt)" />
+                <div className="brand-icon" style={{ overflow: 'hidden' }}>
+                    <img src="/logo.png" alt="CareerOS Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <span className="brand-name">CareerOS</span>
             </div>

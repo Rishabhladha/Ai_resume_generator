@@ -1,6 +1,7 @@
+
 import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router'
-import { Zap, Mail, ArrowLeft, KeyRound, Eye, EyeOff, CheckCircle, RefreshCw } from 'lucide-react'
+import { Mail, ArrowLeft, KeyRound, Eye, EyeOff, CheckCircle, RefreshCw } from 'lucide-react'
 import { sendOtp, verifyOtpReset } from '../../../api'
 import '../auth.form.scss'
 
@@ -156,7 +157,9 @@ const ForgotPassword = () => {
 
             <div className="auth-card" style={{ maxWidth: 440 }}>
                 <div className="auth-brand">
-                    <div className="auth-brand-icon"><Zap size={22} color="white" /></div>
+                    <div className="auth-brand-icon">
+                        <img src="/logo.png" alt="CareerOS" style={{ width: 26, height: 26, objectFit: 'contain' }} />
+                    </div>
                     <span className="auth-brand-name">CareerOS</span>
                 </div>
 

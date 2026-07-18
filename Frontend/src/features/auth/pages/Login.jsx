@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router'
 import { useAuth } from '../hooks/useAuth'
-import { Zap, Mail, Lock } from 'lucide-react'
+import { Mail, Lock } from 'lucide-react'
 import '../auth.form.scss'
 
 const Login = () => {
@@ -36,7 +36,9 @@ const Login = () => {
 
             <div className="auth-card">
                 <div className="auth-brand">
-                    <div className="auth-brand-icon"><Zap size={22} color="white" /></div>
+                    <div className="auth-brand-icon" style={{ overflow: 'hidden' }}>
+                        <img src="/logo.png" alt="CareerOS" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
                     <span className="auth-brand-name">CareerOS</span>
                 </div>
 

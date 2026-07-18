@@ -334,7 +334,7 @@ const WarRoom = () => {
                 setJob(data.application)
                 setCurrentJob(data.application)
                 setLoading(false)
-            }).catch(() => { navigate('/'); setLoading(false) })
+            }).catch(() => { navigate('/dashboard'); setLoading(false) })
         } else {
             setJob(currentJob)
         }
@@ -402,7 +402,7 @@ const WarRoom = () => {
         <div className="warroom-page">
             {/* Header */}
             <div className="warroom-header">
-                <button className="btn-ghost btn-sm" onClick={() => navigate('/')}>
+                <button className="btn-ghost btn-sm" onClick={() => navigate('/dashboard')}>
                     <ArrowLeft size={14} /> Back
                 </button>
                 <div className="warroom-job-info">

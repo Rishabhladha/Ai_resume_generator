@@ -98,7 +98,9 @@ const Landing = () => {
             <nav className={`landing-nav ${scrolled ? 'scrolled' : ''}`}>
                 <div className="nav-inner">
                     <div className="nav-brand" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                        <div className="nav-brand-icon">🚀</div>
+                        <div className="nav-brand-icon" style={{ overflow: 'hidden' }}>
+                            <img src="/logo.png" alt="CareerOS" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
                         <span className="nav-brand-name">CareerOS</span>
                     </div>
 
@@ -400,7 +402,9 @@ const Landing = () => {
             <footer className="landing-footer">
                 <div className="footer-inner">
                     <div className="footer-brand">
-                        <div className="nav-brand-icon">🚀</div>
+                        <div className="nav-brand-icon" style={{ overflow: 'hidden' }}>
+                            <img src="/logo.png" alt="CareerOS" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
                         <span className="nav-brand-name">CareerOS</span>
                     </div>
                     <p className="footer-tagline">AI-powered job search intelligence. Built for ambitious professionals.</p>

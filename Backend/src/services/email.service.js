@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer')
+const path = require('path')
 
 /**
  * Creates a nodemailer transporter using Gmail SMTP.
@@ -25,8 +26,9 @@ async function sendOtpEmail(email, otp) {
         subject: `${otp} is your CareerOS password reset code`,
         html: `
         <div style="font-family: Arial, sans-serif; background: #050914; color: #f1f5f9; padding: 40px; max-width: 520px; margin: 0 auto; border-radius: 16px;">
-            <div style="margin-bottom: 32px;">
-                <span style="font-size: 20px; font-weight: 800; color: #fff;">🚀 CareerOS</span>
+            <div style="margin-bottom: 32px; display: flex; align-items: center; gap: 10px;">
+                <img src="cid:logo" alt="CareerOS" width="36" height="36" style="border-radius: 8px; vertical-align: middle;" />
+                <span style="font-size: 20px; font-weight: 800; color: #fff; vertical-align: middle;">CareerOS</span>
             </div>
 
             <h2 style="font-size: 24px; font-weight: 700; color: #f1f5f9; margin: 0 0 8px;">Password Reset Request</h2>
@@ -45,9 +47,17 @@ async function sendOtpEmail(email, otp) {
             </p>
         </div>
         `,
+        attachments: [
+            {
+                filename: 'logo.png',
+                path: path.join(__dirname, '../../../Frontend/public/logo.png'),
+                cid: 'logo'
+            }
+        ]
     }
 
     await transporter.sendMail(mailOptions)
 }
 
 module.exports = { sendOtpEmail }
+
