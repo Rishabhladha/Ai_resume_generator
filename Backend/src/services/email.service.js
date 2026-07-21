@@ -41,8 +41,9 @@ async function sendOtpEmail(email, otp) {
         subject: `${otp} is your CareerOS password reset code`,
         html: `
         <div style="font-family: Arial, sans-serif; background: #050914; color: #f1f5f9; padding: 40px; max-width: 520px; margin: 0 auto; border-radius: 16px;">
-            <div style="margin-bottom: 32px; display: flex; align-items: center; gap: 10px;">
-                <span style="font-size: 20px; font-weight: 800; color: #fff; vertical-align: middle;">CareerOS</span>
+            <div style="margin-bottom: 32px; text-align: center;">
+                <img src="https://ai-interview-os.vercel.app/logo.png" alt="CareerOS Logo" style="max-height: 50px; display: inline-block; vertical-align: middle; margin-right: 10px;" />
+                <span style="font-size: 24px; font-weight: 800; color: #fff; vertical-align: middle;">CareerOS</span>
             </div>
             <h2 style="font-size: 24px; font-weight: 700; color: #f1f5f9; margin: 0 0 8px;">Password Reset Request</h2>
             <p style="color: #94a3b8; font-size: 15px; line-height: 1.6; margin: 0 0 32px;">
