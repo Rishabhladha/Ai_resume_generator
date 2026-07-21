@@ -225,8 +225,7 @@ async function sendOtpController(req, res) {
 
     const user = await userModel.findOne({ email: email.toLowerCase() })
     if (!user) {
-        // Return generic message to avoid email enumeration attacks
-        return res.status(200).json({ message: "If that email exists, an OTP has been sent." })
+        return res.status(404).json({ message: "No account found with this email address." })
     }
 
     // Generate a random 6-digit OTP
