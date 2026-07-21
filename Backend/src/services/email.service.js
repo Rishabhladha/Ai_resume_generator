@@ -50,7 +50,7 @@ async function sendOtpEmail(email, otp) {
         attachments: [
             {
                 filename: 'logo.png',
-                path: path.join(__dirname, '../../../Frontend/public/logo.png'),
+                path: path.join(__dirname, '../../public/logo.png'),
                 cid: 'logo'
             }
         ]
