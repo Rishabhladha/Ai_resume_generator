@@ -240,7 +240,12 @@ async function sendOtpController(req, res) {
     await otpModel.create({ email: email.toLowerCase(), otp: hashedOtp })
 
     // Send the plain OTP via email
-    await sendOtpEmail(email, otp)
+    try {
+        await sendOtpEmail(email, otp)
+    } catch (emailError) {
+        console.error("OTP Email Error:", emailError)
+        return res.status(500).json({ message: "Failed to send email. Details: " + emailError.message })
+    }
 
     res.status(200).json({ message: "OTP sent to your email address." })
 }
