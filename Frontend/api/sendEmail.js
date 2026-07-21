@@ -1,30 +1,17 @@
 const nodemailer = require('nodemailer');
 
-/**
- * Sends a 6-digit OTP to the given email address.
- * Uses a Vercel Bridge in production to bypass Render's firewall.
- */
-async function sendOtpEmail(email, otp) {
-    // If we are running on Render (production), send the email through the Vercel Bridge
-    if (process.env.NODE_ENV === 'production') {
-        const vercelUrl = process.env.FRONTEND_URL;
-        if (!vercelUrl) {
-            throw new Error("FRONTEND_URL must be set in Render for the email bridge to work!");
-        }
-        const response = await fetch(`${vercelUrl}/api/sendEmail`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, otp })
-        });
-        
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(`Vercel Bridge failed: ${error.error || response.statusText}`);
-        }
-        return;
+export default async function handler(req, res) {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method Not Allowed' });
     }
 
-    // If we are running on localhost, just use Nodemailer directly (SMTP is not blocked locally)
+    const { email, otp } = req.body;
+
+    if (!email || !otp) {
+        return res.status(400).json({ error: 'Email and OTP are required' });
+    }
+
+    // Connect to Gmail SMTP (Vercel allows port 465)
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
@@ -60,8 +47,11 @@ async function sendOtpEmail(email, otp) {
         `
     };
 
-    await transporter.sendMail(mailOptions);
+    try {
+        await transporter.sendMail(mailOptions);
+        res.status(200).json({ success: true, message: 'Email sent successfully' });
+    } catch (error) {
+        console.error('SMTP Error:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
 }
-
-module.exports = { sendOtpEmail };
-
