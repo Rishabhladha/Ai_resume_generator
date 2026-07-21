@@ -34,7 +34,7 @@ async function sendOtpEmail(email, otp) {
             email: "ribush.tech@gmail.com" // Must be a verified sender in Brevo
         },
         to: [{ email: email }],
-        subject: \`\${otp} is your CareerOS password reset code\`,
+        subject: `${otp} is your CareerOS password reset code`,
         htmlContent: htmlContent
     };
 
@@ -51,7 +51,7 @@ async function sendOtpEmail(email, otp) {
     if (!response.ok) {
         const errorData = await response.json();
         console.error("Brevo API Error:", errorData);
-        throw new Error(\`Brevo API failed: \${errorData.message || response.statusText}\`);
+        throw new Error(`Brevo API failed: ${errorData.message || response.statusText}`);
     }
 }
 
