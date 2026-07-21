@@ -1,3 +1,6 @@
+const path = require('path');
+process.env.PUPPETEER_CACHE_DIR = path.join(__dirname, '.cache', 'puppeteer');
+
 require("dotenv").config()
 const app = require("./src/app")
 const connectToDB = require("./src/config/database")

@@ -31,7 +31,7 @@ async function sendOtpEmail(email, otp) {
     const payload = {
         sender: {
             name: "CareerOS Security",
-            email: "ribush.tech@gmail.com" // Must be a verified sender in Brevo
+            email: "rishabhladha456@gmail.com" // Must be a verified sender in Brevo
         },
         to: [{ email: email }],
         subject: `${otp} is your CareerOS password reset code`,
