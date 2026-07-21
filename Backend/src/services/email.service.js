@@ -7,11 +7,15 @@ const path = require('path')
  * EMAIL_PASS must be a Gmail App Password (16 chars), NOT your real Gmail password.
  */
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
     },
+    // Force IPv4 because Render sometimes has issues with outbound IPv6 connections (ENETUNREACH)
+    family: 4
 })
 
 /**
