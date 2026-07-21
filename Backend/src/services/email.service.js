@@ -1,37 +1,13 @@
-const nodemailer = require('nodemailer')
-const path = require('path')
-
 /**
- * Creates a nodemailer transporter using Gmail SMTP.
- * Requires EMAIL_USER and EMAIL_PASS in .env
- * EMAIL_PASS must be a Gmail App Password (16 chars), NOT your real Gmail password.
- */
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-    },
-    // Force IPv4 because Render sometimes has issues with outbound IPv6 connections (ENETUNREACH)
-    family: 4
-})
-
-/**
- * Sends a 6-digit OTP to the given email address.
+ * Sends a 6-digit OTP to the given email address using Brevo HTTP API.
+ * Bypasses Render's strict SMTP blocking.
  * @param {string} email - Recipient email
  * @param {string} otp   - 6-digit OTP string
  */
 async function sendOtpEmail(email, otp) {
-    const mailOptions = {
-        from: `"CareerOS Security" <${process.env.EMAIL_USER}>`,
-        to: email,
-        subject: `${otp} is your CareerOS password reset code`,
-        html: `
+    const htmlContent = `
         <div style="font-family: Arial, sans-serif; background: #050914; color: #f1f5f9; padding: 40px; max-width: 520px; margin: 0 auto; border-radius: 16px;">
             <div style="margin-bottom: 32px; display: flex; align-items: center; gap: 10px;">
-                <img src="cid:logo" alt="CareerOS" width="36" height="36" style="border-radius: 8px; vertical-align: middle;" />
                 <span style="font-size: 20px; font-weight: 800; color: #fff; vertical-align: middle;">CareerOS</span>
             </div>
 
@@ -50,17 +26,33 @@ async function sendOtpEmail(email, otp) {
                 — CareerOS Security Team
             </p>
         </div>
-        `,
-        attachments: [
-            {
-                filename: 'logo.png',
-                path: path.join(__dirname, '../../public/logo.png'),
-                cid: 'logo'
-            }
-        ]
-    }
+    `;
 
-    await transporter.sendMail(mailOptions)
+    const payload = {
+        sender: {
+            name: "CareerOS Security",
+            email: "ribush.tech@gmail.com" // Must be a verified sender in Brevo
+        },
+        to: [{ email: email }],
+        subject: \`\${otp} is your CareerOS password reset code\`,
+        htmlContent: htmlContent
+    };
+
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+        method: "POST",
+        headers: {
+            "accept": "application/json",
+            "api-key": process.env.BREVO_API_KEY,
+            "content-type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Brevo API Error:", errorData);
+        throw new Error(\`Brevo API failed: \${errorData.message || response.statusText}\`);
+    }
 }
 
 module.exports = { sendOtpEmail }
