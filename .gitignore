@@ -24,3 +24,8 @@ yarn-debug.log*
 Thumbs.db
 .vscode/
 .idea/
+
+# Internal notes / docs
+details
+scalable
+
