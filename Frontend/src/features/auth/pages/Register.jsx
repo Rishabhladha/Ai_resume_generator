@@ -50,7 +50,7 @@ const Register = () => {
                         <label className="input-label">Username</label>
                         <div className="input-icon-wrap">
                             <User size={15} className="input-icon" />
-                            <input className="input input-with-icon" type="text" placeholder="johndoe"
+                            <input className="input input-with-icon" type="text" placeholder="ankitkumar"
                                 value={form.username} onChange={e => setForm(f => ({ ...f, username: e.target.value }))} />
                         </div>
                     </div>
